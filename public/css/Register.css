@@ -1,0 +1,19 @@
+body{
+	background-color: #f0f8ff;
+}
+
+.register_form_style{
+	width: 70%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 30px;
+}
+.resgister_panel_sytle{
+	margin-top: 20px;
+}
+.register_button_style{
+	width: 100%;
+}
+.register_form_style .form-control{
+	margin-bottom: 15px;
+}

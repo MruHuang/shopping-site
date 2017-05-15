@@ -1,0 +1,17 @@
+body{
+	background-color: #f0f8ff;
+}
+
+.forgetPwd_form_style{
+	width: 50%;
+	margin-top: 30px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.forgetPwd_button_sytle{
+	width: 100%;
+	margin-top: 20px;
+}
+.forgetPwd_panel_sytle{
+	margin-top: 20px;
+}

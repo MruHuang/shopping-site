@@ -1,0 +1,103 @@
+
+
+body {
+    background-color: #9FD1F0;
+    font-family: Microsoft JhengHei;
+    font-size: 20px;
+
+}
+
+@media (max-width: 1000px) {
+    body {
+        width: 1000px;
+    }
+}
+
+.panel-title{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 25px;
+    color: inherit;
+}
+
+th{
+    font-size: 23px;
+}
+
+td{
+    font-size: 20px;
+}
+
+p{
+    font-size: 18px;
+}
+a{
+    font-size: 20px;
+}
+h5{
+    font-size: 18px;
+}
+h4{
+    font-size: 25px;
+}
+
+h3{
+    font-size: 30px;
+}
+
+
+
+.btn{
+    font-size: 20px;
+}
+.form-control{
+    font-size: 20px;
+    height: 40px;
+    margin-bottom: 15px;
+}
+
+.navbar_sytle {
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.search_nav_title_style {
+    font-size: 40px;
+}
+
+.search_nav_text_style {
+    font-size: 15px;
+}
+
+.search_search_area_sytle {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.search_search_sytle {
+    width: 100%;
+}
+
+.search_more_style {
+    font-size: 20px;
+}
+
+
+.search_type_style {
+    padding: 0px;
+}
+
+.menu_btn{
+    height: 45px;
+    width: 100%;
+}
+
+@media (min-width: 768px){
+    .modal-dialog {
+        width: 800px;
+        margin: 30px auto;
+    }
+}

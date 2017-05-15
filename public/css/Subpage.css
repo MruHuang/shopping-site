@@ -1,0 +1,38 @@
+.subpage_btn_type_style {
+    width: 100%;
+    background-color: #df4a1d;
+    border-color: #df4a1d;
+    color: #fff;
+    letter-spacing: 2px;
+    font-size: 20px;
+}
+
+.subpage_type_area_sytle {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.subpage_carousel_letf_sytle {
+    position: absolute;
+    top: 10%;
+    bottom: 0;
+    left: -5%;
+    width: 15%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.subpage_carousel_right_sytle {
+    position: absolute;
+    top: 10%;
+    bottom: 0;
+    left: 90%;
+    width: 15%;
+    font-size: 20px;
+    text-align: center;
+}
+.panel.panel-primary{
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+}

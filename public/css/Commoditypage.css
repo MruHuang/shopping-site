@@ -1,0 +1,43 @@
+.commoditypage_panel_sytle{
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.commoditypage_panel_sytle .media-body{
+    width: 100%;
+}
+.commoditypage_media_text{
+	font-size: 20px;
+    margin-bottom: 5px;
+}
+.commoditypage_media_title{
+    font-weight: bolder;
+}
+.media-body .panel-default{
+    margin-bottom: 5px;
+    width: 100%;
+}
+.commoditypage_media_btn{
+    float:right ;
+    margin-right:10px;
+}
+.commoditypage_panel_player{
+    margin-top: 10px;
+    width: 560px;
+    height: 315px;
+}
+.commoditypage_introduction_title_sytle{
+    margin: 0px;
+    margin-bottom: 10px;
+
+}
+.commoditypage_introduction_text_sytle{
+    font-size: 20px;
+    margin-top: 5px;
+}
+.commoditypage_introduction_area_sytle{
+    margin-top: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}

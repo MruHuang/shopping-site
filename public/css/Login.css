@@ -1,0 +1,14 @@
+body{
+	background-color: #f0f8ff;
+}
+
+.login_form_style{
+	width: 50%;
+	margin-top: 30px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.login_button_sytle{
+	width: 100%;
+	margin-top: 20px;
+}
