@@ -37,6 +37,7 @@
             <input type="date" class="form-control" id ="member_birthday" name="member_birthday" placeholder="輸入生日 Ex：1990-01-01" >
             <label>Line-id</label>
             <input type="text" class="form-control" id ="member_lineid" name="member_lineid" placeholder="輸入Line-id">
+            <div class="alert alert-success">為保障會員權益，加入會員必需要有現任會員推薦</div>
             <label>推薦人(限會員)</label>
             <input type="text" class="form-control" id ="recommender_name" name="recommender_name" placeholder="輸入推薦人">
             <label>推薦人手機(Ex:0912345678)</label>
