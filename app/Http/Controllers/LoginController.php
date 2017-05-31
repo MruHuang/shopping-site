@@ -11,9 +11,11 @@ class LoginController extends Controller
 {
     //
     public function LoginCheck(Request $Request, Login $LoginFunction){
+        //return $Request->all();
     	$member_account = $Request->input('member_account');
     	$member_password = $Request->input('member_password');
         $message_text ="帳號或是密碼錯誤，請重新輸入";
+        //return $LoginFunction->LoginCheckDataBase($member_account,$member_password);
         if(
             $LoginFunction->LoginCheckDataBase(
                 $member_account,
@@ -42,7 +44,7 @@ class LoginController extends Controller
         }
         
         return View::make('Login',[
-                'isRegistered'=>"true",
+                'isRegistered'=>1,
 				'message_text'=>$message_text
 		]);
     }
@@ -50,8 +52,8 @@ class LoginController extends Controller
     public function LogOut(Login $LoginFunction){
         $LoginFunction->Logout();
         return View::make('Login',[
-                'message_text'=>null,
-                'isRegistered'=>"true"
+                'isRegistered'=>1,
+                'message_text'=>null
         ]);
     }
 }

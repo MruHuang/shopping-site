@@ -1,7 +1,7 @@
 @inject('MCC', 'App\MemberCommodity\MemberCommodityCount')
 <div class="media">
     <div class="media-left media-middle" >
-        <img src="/{{ $AllInformation['commodityPhotoA'] }}" alt="{{ $AllInformation['commodityName'] }}" >
+         <a class="display_img"><img src="/{{ $AllInformation['commodityPhotoA'] }}" alt="{{ $AllInformation['commodityName'] }}" ></a>
     </div>
     <div class="media-body">
         <div class="panel panel-default">
@@ -9,10 +9,11 @@
                 <h3 class="media-heading commoditypage_media_title">{{ $AllInformation['commodityName'] }}</h3>
             </div>
         </div>
+        <p class="commoditypage_media_text">市場價格：{{ $AllInformation['originalPrice'] }}元</p>
         <p style="display: none;" id="last_amount" data_Amount="1">
-        <p class="commoditypage_media_text" id="groupbuy_price" data-proupbuyPrice ="{{ $AllInformation['GroupbuyPrice'] }}">價格：{{ $AllInformation['GroupbuyPrice'] }}元</p>
+        <p class="commoditypage_media_text" id="groupbuy_price" data-proupbuyPrice ="{{ $AllInformation['GroupbuyPrice'] }}">會員價格：{{ $AllInformation['GroupbuyPrice'] }}元</p>
         <p class="commoditypage_media_text" id="groupbuy_count" data-groupbuyCount = "{{ $MCC->MemberGroupbuyCount($AllInformation['ID'],'groupbuy') }}">目前購買數量：{{ $MCC->MemberGroupbuyCount($AllInformation['ID'],'groupbuy') }}</p>
-        <p class="commoditypage_media_text" id="now_groupbuy_price" >目前價格：{{ $MCC->MemberGroupbuyNowPrice($AllInformation['ID'],'groupbuy') }}元</p>
+        <p class="commoditypage_media_text" id="now_groupbuy_price" >團購目前價格：{{ $MCC->MemberGroupbuyNowPrice($AllInformation['ID'],'groupbuy') }}元</p>
         <div class="row">
             <div class="col-xs-2">
                 <p class="commoditypage_media_text">數量</p>
@@ -65,13 +66,20 @@
         @endif
         <!-- <a href="{{-- route('addShoppingCar',['ID'=>$AllInformation['ID'],'commodityClass'=>'groupbuy','commodityArea'=>'Collection']) --}}" class="btn btn-primary commoditypage_media_btn addCollectioin">加入收藏</a> -->
         <a href="{{ route('addShoppingCar',['ID'=>$AllInformation['ID'],'commodityClass'=>'groupbuy','commodityArea'=>'Groupbuy']) }}" class="btn btn-primary commoditypage_media_btn addShoppingCar" style="float: right; margin-left: 20px;">加入購物車</a>
-        <a href="{{ route('ShoppingCar',['speciestype'=>'Groupbuy']) }}" class="btn btn-primary" style="float: right; margin-left: 20px;">前往結帳</a>
+        <a href="{{ route('goGroupbuyCheckout',['ID'=>$AllInformation['ID'],'commodityClass'=>'groupbuy','commodityArea'=>'Groupbuy']) }}" class="btn btn-primary goGroupbuyCheckout" style="float: right; margin-left: 20px;">前往結帳</a>
     </div>
 </div>
+
+@if(count($message_text))
+    @include('partials.GroupbuyCommodityMessage')
+@endif
+
 
 <script type="text/javascript">
     var url_addcollection = $('.addCollectioin').attr('href');
     var url_addshoppingcar = $('.addShoppingCar').attr('href');
+    var url_goGroupbuyCheckout = $('.goGroupbuyCheckout').attr('href');
+
     var groupbuy_count = $('#groupbuy_count').attr('data-groupbuyCount');
     var finally_price = $('#groupbuy_price').attr('data-proupbuyPrice');
     var conditions_amount_array = new Array();
@@ -95,6 +103,7 @@
         $('#now_groupbuy_price').text("目前價格："+finally_price+"元");
         $('.addCollectioin').attr('href',url_addcollection+'/'+amount);
         $('.addShoppingCar').attr('href',url_addshoppingcar+'/'+amount);
+        $('.goGroupbuyCheckout').attr('href',url_goGroupbuyCheckout+'/'+amount);
 
     });
 

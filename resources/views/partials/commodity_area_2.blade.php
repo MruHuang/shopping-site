@@ -19,7 +19,7 @@
 			            <div class="home_commodity_style">
 			            	<img src="img/ps4.jpg" width=100%>
 			            	<h5>名稱：{{ $AllInformation[$array_key][$j]['commodityName']  }}</h5>
-			                <p>價錢：{{ $AllInformation[$array_key][$j]['commodityPrice'] }}元</p>
+			                <p>價格：{{ $AllInformation[$array_key][$j]['commodityPrice'] }}元</p>
 			                <div style="display:none"></div>
 			            </div>
 			            </a>
@@ -34,7 +34,7 @@
 			'type'=>'1',
 			'order_type'=>'AddTime',
 			'this_page'=>'1'
-			]) }} " class="home_more_style">more</a></div>
+			]) }} " class="home_more_style">more...</a></div>
 		</div>
 	</div>
 @endfor

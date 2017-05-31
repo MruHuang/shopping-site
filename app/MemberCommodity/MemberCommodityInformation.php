@@ -62,6 +62,7 @@ class MemberCommodityInformation
         ->join('order_detailed',function($query) use ($ID, $speciestype){
             $query
             ->on('merchandise_order.orderID','order_detailed.orderID')
+            ->where('merchandise_order.orderState','Unpaid')
             ->where('order_detailed.commodityArea', $speciestype)
             ->where('order_detailed.commodityID',$ID);
         })

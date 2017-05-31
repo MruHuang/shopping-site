@@ -19,7 +19,7 @@ class groupbuy_commodity extends Model
 
      public function scopeProduct($query){
         return $query
-        ->where('groupbuy_commodity.isShelves',1);
+        ->where('groupbuy_commodity.isShelves',true);
     }
 
     public function scopeCountNumber(

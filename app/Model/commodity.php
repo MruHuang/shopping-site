@@ -27,7 +27,7 @@ class commodity extends Model
     }
     public function scopeProduct($query){
         return $query
-        ->where('commodity.IsShelves',1)
+        ->where('commodity.IsShelves',true)
         ;
     }
     public function scopeFindProduct(
@@ -63,7 +63,7 @@ class commodity extends Model
         return $query
         ->join('groupbuy_commodity', function ($join) {
             $join->on('groupbuy_commodity.commodityID', 'commodity.commodityID')
-             ->where('groupbuy_commodity.isShelves',1);
+             ->where('groupbuy_commodity.isShelves',true);
         });
     }
 
@@ -71,7 +71,7 @@ class commodity extends Model
         return $query
         ->join('limited_commodity', function ($join) {
             $join->on('limited_commodity.commodityID', 'commodity.commodityID')
-             ->where('limited_commodity.isShelves',1);
+             ->where('limited_commodity.isShelves',true);
         });
     }
 

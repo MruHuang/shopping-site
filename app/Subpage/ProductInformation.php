@@ -61,7 +61,7 @@ class ProductInformation
             ->orderBy('groupbuy_commodity.'.$order_type)
             ->offset($start - 1)
             ->limit($end - $start + 1)
-            ->where('groupbuy_commodity.isShelves',1)
+            ->where('groupbuy_commodity.isShelves',true)
             ->select(
                 'commodity.commodityName',
                 'groupbuy_commodity.groupbuyPrice as commodityPrice',
@@ -74,7 +74,7 @@ class ProductInformation
             ->offset($start - 1)
             ->limit($end - $start + 1)
             ->SpeciesID($type)
-            ->where('groupbuy_commodity.isShelves',1)
+            ->where('groupbuy_commodity.isShelves',true)
             ->select(
                 'commodity.commodityName',
                 'groupbuy_commodity.groupbuyPrice as commodityPrice',
@@ -97,7 +97,7 @@ class ProductInformation
             ->orderBy('limited_commodity.'.$order_type)
             ->offset($start - 1)
             ->limit($end - $start + 1)
-            ->where('limited_commodity.isShelves',1)
+            ->where('limited_commodity.isShelves',true)
             ->select(
                 'commodity.commodityName',
                 'limited_commodity.limitedPrice as commodityPrice',
@@ -110,7 +110,7 @@ class ProductInformation
             ->offset($start - 1)
             ->limit($end - $start + 1) 
             ->SpeciesID($type)
-            ->where('limited_commodity.isShelves',1)
+            ->where('limited_commodity.isShelves',true)
             ->select(
                 'commodity.commodityName',
                 'limited_commodity.limitedPrice as commodityPrice',

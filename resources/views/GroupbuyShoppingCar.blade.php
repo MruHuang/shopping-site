@@ -25,7 +25,7 @@
                 <th>目前購買數量</th>
                 <th>目前價格</th>
                 <th>數量</th>
-                <th>總價</th>
+                <th>小計</th>
                 <th></th>
             </tr>
             <?php $MAX= count($AllInformation); ?>
@@ -64,17 +64,18 @@
                 </td>
                 <td class="total_price">{{ $MCC->MemberGroupbuyNowPrice($AllInformation[$i]['ID'],'groupbuy',$AllInformation[$i]['user_amount'])*$AllInformation[$i]['user_amount'] }}</td>
                 <td class="text-center">
-                    <a href=" {{ route('DelMemberCommodity',['ID'=>$AllInformation[$i]['user_ID'],'$speciestype'=>'Groupbuy' ]) }} " class="btn btn-primary delete">刪除</a>
+                    <a data-id="{{ $AllInformation[$i]['user_ID'] }}" class="btn btn-primary delete">刪除</a>
                 </td>
             </tr>
             @endfor
         </table>
+        <div class="col-xs-12 alert alert-info text-right" ><p id="temporarily_total_amount">總金額 元</p></div>
     </div>
     {{--@include('partials.pagination')--}}
     @if(count($AllInformation)!=0)
     <div class="row">
         <div class="col-xs-4 col-xs-offset-4" style="margin-bottom: 20px; ">
-            <button class="btn btn-success" id="ordering" style="width: 100%;"> 下訂 </button>
+            <button class="btn btn-success" id="ordering" style="width: 100%;"> 結帳 </button>
         </div>
     </div>
     @endif
@@ -129,14 +130,42 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade message_modal" style="display: none;" id="delete_message">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close message_close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">刪除再確認</h4>
+            </div>
+            <div class="modal-body">
+                您確認要從團購購物車裡刪除此項商品
+                <form role="form"  method="POST" id="del_commodity_form" action=" {{ Route('DelMemberCommodity') }} "> 
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" id="del_commodity_id" name="commodity_id" value="">
+                    <input type="hidden" name="commodity_speciestype" value="Groupbuy">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default message_close" style="float: right;margin-left: 20px;">Close</a>
+                <a id="del_commodity_btn" class="btn btn-primary" style="float: right;">確認刪除</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script type="text/javascript">
     $(document).ready(function() {
+        compute_temporarily_total_amount();
         $('#ordering').click(function(event) {
             $('#details').show();
             $('#ordering').hide();
             $('.delete').attr('disabled', true);
             $('.amount').attr('disabled', true);
-            compute_total_price();
+            //compute_total_price();
             var json = "[";
             $('.ID').each(function() {
                 var string="{";
@@ -160,6 +189,17 @@
             $('#ordering').show();
 
         });
+
+        $('.delete').click(function(event) {
+            var del_commodity_id = $(this).attr('data-id');
+            $('#del_commodity_id').val(del_commodity_id);
+            $('#delete_message').show()
+        });
+
+        $('#del_commodity_btn').click(function(event) {
+            $('#del_commodity_form').submit();
+        });
+
         $(".amount").change(function(event) {
             var amount = $(this).val();
             var groupbuy_count = $(this).parent().prev().prev().attr('data-groupbuy_count');
@@ -169,47 +209,61 @@
             var amountD = $(this).attr('data-amountD');
             var total_amount = parseInt(groupbuy_count)+parseInt(amount);
             var now_price = $(this).attr('data-price');
-            if(total_amount>=amountD && amountD!=null ){
+            if(total_amount>=amountD && amountD!=""){
+                console.log(amountD);
                 now_price = $(this).attr('data-priceD');
-            }else if(total_amount>=amountC && amountC!=null ){
+            }else if(total_amount>=amountC && amountC!=""){
+                console.log(amountC);
                 now_price = $(this).attr('data-priceC');
-            }else if(total_amount>=amountB && amountB!=null ){
+            }else if(total_amount>=amountB && amountB!=""){
+                console.log(amountB);
                 now_price = $(this).attr('data-priceB');
-            }else if(total_amount>=amountA && amountA!=null ){
+            }else if(total_amount>=amountA && amountA!=""){
+                console.log(amountA);
                 now_price = $(this).attr('data-priceA');
             }
             $(this).parent().prev().text(now_price);
             console.log(total_amount,now_price);
             $(this).parent().next().text(now_price*amount);
-            compute_total_price();
+            compute_temporarily_total_amount();
         });
 
-        $('#is_use').change(function(event) {
-            var is_use = $(this).prop('checked');
-            compute_total_price();
-            if(is_use){
-                var point = parseInt($('#Integral').val());
-                var PIntegral = parseInt($('#Integral').attr('data-PIntegral'));
-                var final_price = parseInt($('#final_price').val());
-                final_price = final_price - (point*PIntegral*0.01);
-                $('#final_price').val(final_price);
-            }
-        });
-        function compute_total_price(){
+        function compute_temporarily_total_amount(){
             var each_price = 0;
             var total_price=0; 
             $('.total_price').each(function() {
                 each_price = parseInt($(this).text());
                 total_price = total_price + each_price;
             });
-            var free_freight = parseInt($('#free_freight').attr('data-free_freight'));
-            if(total_price<free_freight){
-                var freight = parseInt($('#freight').val());
-                total_price = total_price + freight;
-            }
-            $('#total_amount').val(total_price);
-            $('#final_price').val(total_price);
+            var temporarily_total_amount = "總金額"+total_price+"元";
+            $('#temporarily_total_amount').text(temporarily_total_amount);
         }
+        // $('#is_use').change(function(event) {
+        //     var is_use = $(this).prop('checked');
+        //     compute_total_price();
+        //     if(is_use){
+        //         var point = parseInt($('#Integral').val());
+        //         var PIntegral = parseInt($('#Integral').attr('data-PIntegral'));
+        //         var final_price = parseInt($('#final_price').val());
+        //         final_price = final_price - (point*PIntegral*0.01);
+        //         $('#final_price').val(final_price);
+        //     }
+        // });
+        // function compute_total_price(){
+        //     var each_price = 0;
+        //     var total_price=0; 
+        //     $('.total_price').each(function() {
+        //         each_price = parseInt($(this).text());
+        //         total_price = total_price + each_price;
+        //     });
+        //     var free_freight = parseInt($('#free_freight').attr('data-free_freight'));
+        //     if(total_price<free_freight){
+        //         var freight = parseInt($('#freight').val());
+        //         total_price = total_price + freight;
+        //     }
+        //     $('#total_amount').val(total_price);
+        //     $('#final_price').val(total_price);
+        // }
 
     });
 </script>

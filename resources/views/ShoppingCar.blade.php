@@ -22,7 +22,7 @@
                 <th>商品分類</th>
                 <th>價格</th>
                 <th>數量</th>
-                <th>總價</th>
+                <th>小計</th>
                 <th></th>
             </tr>
             <?php $MAX= count($AllInformation); ?>
@@ -48,18 +48,22 @@
                 </td>
                 <td class="total_price">{{ ($AllInformation[$i]['price']*$AllInformation[$i]['user_amount']) }}</td>
                 <td class="text-center">
-                    <a href=" {{ route('DelMemberCommodity',['ID'=>$AllInformation[$i]['user_ID'],'$speciestype'=>'Car' ]) }} " class="btn btn-primary delete">刪除</a>
+                    <a data-id="{{ $AllInformation[$i]['user_ID'] }}" class="btn btn-primary delete">刪除</a>
                 </td>
             </tr>
             @endfor
         </table>
+        <div class="col-xs-12 alert alert-info text-right" ><p id="temporarily_total_amount">總金額 元</p></div>
     </div>
     {{--@include('partials.pagination')--}}
     @if(count($AllInformation)!=0)
     	<div class="row">
 	        <div class="col-xs-4 col-xs-offset-4" style="margin-bottom: 20px; ">
-	            <button class="btn btn-success" id="ordering" style="width: 100%;"> 下訂 </button>
-	        </div>
+	            <button class="btn btn-success" id="ordering" style="width: 100%;"> 結帳 </button>
+	        </div><!-- 
+            <div class="col-xs-2" style="margin-bottom: 20px; ">
+                
+            </div> -->
 	    </div>
     @endif
     
@@ -127,8 +131,36 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade message_modal" style="display: none;" id="delete_message">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close message_close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">刪除再確認</h4>
+            </div>
+            <div class="modal-body">
+                您確認要從購物車裡刪除此項商品
+                <form role="form"  method="POST" id="del_commodity_form" action=" {{ Route('DelMemberCommodity') }} "> 
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" id="del_commodity_id" name="commodity_id" value="">
+                    <input type="hidden" name="commodity_speciestype" value="Car">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-default message_close" style="float: right;margin-left: 20px;">Close</a>
+                <a id="del_commodity_btn" class="btn btn-primary" style="float: right;">確認刪除</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 <script type="text/javascript">
     $(document).ready(function() {
+        compute_temporarily_total_amount();
         $('#ordering').click(function(event) {
             $('#details').show();
             $('#ordering').hide();
@@ -157,11 +189,13 @@
             $('#ordering').show();
 
         });
+
         $(".amount").change(function(event) {
             var amount = $(this).val();
             var price = $(this).parent().prev().text();
             $(this).parent().next().text(price*amount);
             compute_total_price();
+            compute_temporarily_total_amount();
         });
 
         $('#is_use').change(function(event) {
@@ -178,6 +212,17 @@
                 $('#final_price').val(final_price);
             }
         });
+
+        $('.delete').click(function(event) {
+            var del_commodity_id = $(this).attr('data-id');
+            $('#del_commodity_id').val(del_commodity_id);
+            $('#delete_message').show()
+        });
+
+        $('#del_commodity_btn').click(function(event) {
+            $('#del_commodity_form').submit();
+        });
+
         function compute_total_price(){
             var each_price = 0;
             var total_price=0; 
@@ -192,6 +237,17 @@
             }
             $('#total_amount').val(total_price);
             $('#final_price').val(total_price);
+        }
+
+        function compute_temporarily_total_amount(){
+            var each_price = 0;
+            var total_price=0; 
+            $('.total_price').each(function() {
+                each_price = parseInt($(this).text());
+                total_price = total_price + each_price;
+            });
+            var temporarily_total_amount = "總金額"+total_price+"元";
+            $('#temporarily_total_amount').text(temporarily_total_amount);
         }
 
     });

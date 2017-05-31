@@ -40,23 +40,23 @@ class merchandise_order extends Model
     }
 
     public function scopeGetUnpaid($query){
-    	$query->where('orderState','Unpaid');
+    	$query->where('orderState','Unpaid')->orderBy('orderID','desc');
     }
 
     public function scopeGetCheck($query){
-        $query->where('orderState','Check');
+        $query->where('orderState','Check')->orderBy('orderID','desc');
     }
 
     public function scopeGetReady($query){
-    	$query->where('orderState','Ready');
+    	$query->where('orderState','Ready')->orderBy('orderID','desc');
     }
 
     public function scopeGetDelivery($query){
-    	$query->where('orderState','Delivery');
+    	$query->where('orderState','Delivery')->orderBy('orderID','desc');
     }
 
     public function scopeGetCarryout($query){
-    	$query->where('orderState','Carryout');
+    	$query->where('orderState','Carryout')->orderBy('orderID','desc');
     }
 
     public function scopeGetOrderID(

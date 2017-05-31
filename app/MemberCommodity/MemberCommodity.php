@@ -122,11 +122,15 @@ class MemberCommodity
         }
 
         $promotion_data = $this->mcio->SelectPromotion();
-        $freight = $promotion_data[0]['freight'];
-        if($promotion_data[0]['freeFreight'] < $totalPrice){
-            $freight = "0";
+        if($data_array['orderclass'] != 'groupbuy'){
+            $freight = $promotion_data[0]['freight'];
+            if($promotion_data[0]['freeFreight'] < $totalPrice){
+                $freight = "0";
+            }else{
+                $totalPrice = $totalPrice + $freight;
+            }
         }else{
-            $totalPrice = $totalPrice + $freight;
+            $freight = "0";
         }
 
         $orderclass = 'nogroupbuy';
@@ -172,7 +176,7 @@ class MemberCommodity
                 $value['Amount']
             );
         }
-        return true;
+        return 1;
     }
     
     public function Getpromotion(){

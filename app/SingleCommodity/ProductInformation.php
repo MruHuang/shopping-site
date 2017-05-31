@@ -14,6 +14,7 @@ class ProductInformation
             'commodityID as ID',
             'commodityName',
             'commodityPrice',
+            'originalPrice',
             'commodityPhotoA',
             'commodityAmount',
             'commodityIntroduction',
@@ -36,8 +37,9 @@ class ProductInformation
     		return array(
 
                 'commodityName' => $temp['commodity.commodityName'],
+                'originalPrice'=> $temp['commodity.originalPrice'],
                 'commodityPhotoA' => $temp['commodity.commodityPhotoA'],
-                'commodityIntroduction' => $temp['commodity.commodityAmount'],
+                'commodityIntroduction' => $temp['commodity.commodityIntroduction'],
                 'commodityPhotoB' => $temp['commodity.commodityPhotoB'],
                 'commodityPhotoC' => $temp['commodity.commodityPhotoC'],
                 'commodityPhotoD' => $temp['commodity.commodityPhotoD'],
@@ -68,8 +70,9 @@ class ProductInformation
     		$temp = array_dot($element);
     		return array(
     			'commodityName' => $temp['commodity.commodityName'],
+                'originalPrice'=> $temp['commodity.originalPrice'],
                 'commodityPhotoA' => $temp['commodity.commodityPhotoA'],
-                'commodityIntroduction' => $temp['commodity.commodityAmount'],
+                'commodityIntroduction' => $temp['commodity.commodityIntroduction'],
                 'commodityPhotoB' => $temp['commodity.commodityPhotoB'],
                 'commodityPhotoC' => $temp['commodity.commodityPhotoC'],
                 'commodityPhotoD' => $temp['commodity.commodityPhotoD'],

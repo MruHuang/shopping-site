@@ -75,7 +75,7 @@ class MemberCommodityInsertOrder
         $inset_order->moneyTransferFN=$moneyTransferFN;
         $inset_order->orderClass=$orderClass;
         $inset_order->save();
-        return $result = true;
+        return $result = 1;
       
     }
 
@@ -125,9 +125,9 @@ class MemberCommodityInsertOrder
             $inset_order_detailed->commodityArea = $commodityArea;
             $inset_order_detailed->commodityAmount = $commodityAmount;
             $inset_order_detailed->save();
-            $result = true;
+            $result = 1;
         }catch(Exception $e){
-            $result = false;
+            $result = 0;
         }finally{
             return $result;
         }

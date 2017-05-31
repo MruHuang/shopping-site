@@ -18,7 +18,9 @@ class Member_commodity extends Model
     	return $query
     	->join('commodity', function ($join) {
         	$join->on('commodity.commodityID', '=', 'member_commodity.commodityID')
-            ->where('member_commodity.commodityClass',  'commodity');
+            ->where('member_commodity.commodityClass',  'commodity'
+         	)
+         	;
         })
         ->select(
      		'member_commodity.ID as user_ID',
@@ -43,7 +45,10 @@ class Member_commodity extends Model
 		return $query
     	->join('groupbuy_commodity', function ($join) {
         	$join->on('groupbuy_commodity.groupbuyID', '=', 'member_commodity.commodityID')
-            ->where('member_commodity.commodityClass',  'groupbuy');
+            ->where('member_commodity.commodityClass',  'groupbuy'
+         	)
+         	
+         	;
         })
         ->select(
         	'member_commodity.ID as user_ID',
@@ -76,7 +81,10 @@ class Member_commodity extends Model
     	return $query
     	->join('limited_commodity', function ($join) {
         	$join->on('limited_commodity.limitedID', '=', 'member_commodity.commodityID')
-            ->where('member_commodity.commodityClass',  'timelimit');
+            ->where('member_commodity.commodityClass',  'timelimit'
+         	)
+         	
+         	;
         })
         ->select(
         	'member_commodity.ID as user_ID',

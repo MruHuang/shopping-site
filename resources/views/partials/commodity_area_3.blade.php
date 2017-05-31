@@ -14,7 +14,7 @@
 		    <div class="panel-body">
 			    <?php $MAX=count($AllInformation[$array_key])<=(18/count($AllInformation))?count($AllInformation[$array_key]):(18/count($AllInformation)) ?>
 				@for ($j = 0; $j < $MAX; $j++)
-				    <div class="col-xs-{{24/(12/count($AllInformation))}}"  style="height: 210px">
+				    <div class="col-xs-{{24/(12/count($AllInformation))}}"  style="height: 180px">
 				        <!--商品-->
 			            <a href="{{ route('Commoditypage',[
 			            'type'=>$array_key,
@@ -24,7 +24,7 @@
 			            	<img src="{{ $AllInformation[$array_key][$j]['commodityPhotoA'] }}" width=100%>
 			            	<!-- <h5>名稱：</h5> -->
 			            	<h5>{{ $AllInformation[$array_key][$j]['commodityName']  }}</h5>
-			                <p>價錢：{{ $AllInformation[$array_key][$j]['commodityPrice'] }}元</p>
+			                <p>價格：{{ $AllInformation[$array_key][$j]['commodityPrice'] }}元</p>
 			                <div style="display:none">{{ $AllInformation[$array_key][$j]['ID'] }}</div>
 			            </div>
 			            </a>
@@ -40,7 +40,7 @@
 			'type'=>'All',
 			'order_type'=>'AddTime',
 			'this_page'=>'1'
-			]) }} " class="home_more_style" style="color: red">more</a></div>
+			]) }} " class="home_more_style" style="color: red">more...</a></div>
 			@endif
 		</div>
 	</div>

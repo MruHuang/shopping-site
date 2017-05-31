@@ -14,6 +14,14 @@ class Member extends Model
 	protected $guarded = [];
     public $timestamps = true;//Eloquent 來自動維護這兩個欄位created_at 和 updated_at
 
+    public function scopeMemberCheck(
+        $query,
+        $member_account
+    ){
+        return $query
+        ->where('memberAccount', $member_account);
+    }
+
     public function scopeRecommenderCheck(
     	$query,
     	$recommender_name,
@@ -69,9 +77,6 @@ class Member extends Model
 		return $query->where('memberAccount', $member_account)
 		->where('memberEmail', $member_Email);
     }
-
-
-
 
     public function Member_commodity(){
         return $this

@@ -24,7 +24,7 @@ class ForgetPwdController extends Controller
         //return $member;
     	if ($result == 1){
             $new_password=substr(md5(rand()),0,8);
-            $member->memberPassword = $new_password;
+            $member->memberPassword = bcrypt($new_password);
             $member->save();
             
     		$mailer->SentMailForgetPwd(
