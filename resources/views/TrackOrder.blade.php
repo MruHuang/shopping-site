@@ -33,10 +33,10 @@
                     <th>商品名稱</th>
                     <th>付款方式</th>
                     <th>總價</th>
-                    <th></th>
+                    <th>詳細</th>
                     <th>狀態</th>
                     @if($All['state']=='Unpaid')
-                    <th></th>
+                    <th>取消訂單</th>
                     @endif
                 </tr>
                 <?php $MAX= count($All['AllInformation']); ?>
@@ -126,7 +126,7 @@
                 <h4 class="modal-title">匯款帳號後五碼</h4>
             </div>
             <div class="modal-body">
-                <form role="form"  method="POST" action="{{ route('TrackOrderFive') }}">
+                <form role="form"  method="POST" id="orderFN_confirm_form" action="{{ route('TrackOrderFive') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" name="orderID" id="update_fn_orderID" value="">
                     <input type="hidden" name="orderState" id="update_fn_orderState" value="">
@@ -134,7 +134,7 @@
                         <input type="text" name="fiveNumber" class="form-control" placeholder="輸入後五碼" style="height: 25px;">
                     </div>
                     <div class="col-xs-3" style="padding: 0; ">
-                        <button  type="submit" class="btn btn-success" style="width: 100%; padding: 2px 2px;">確認</button>
+                        <a class="btn btn-success" id="orderFN_confirm_btn" style="width: 100%; padding: 2px 2px;">確認</a>
                     </div>
                     <div class="col-xs-3" style="padding: 0; ">
                         <a class="btn btn-warning message_close"  style="width: 100%; padding: 2px 2px;">關閉</a>
@@ -150,6 +150,10 @@
 </div>
 <!-- /.modal -->
 
+<div id="loding_page" style="display: none;">
+    @include('partials.Loading')
+</div>
+
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -163,12 +167,18 @@
             $('#cancel_confirm').attr('href',url+'/'+orderID);
             $('.CancelAgain').show();
         });
+
         $('.orderFN_btn').click(function(event) {
             orderID = $(this).attr('date-orderID');
             orderState = $(this).attr('date-orderState');
             $('.orderFN_form').show();
             $('#update_fn_orderID').val(orderID);
             $('#update_fn_orderState').val(orderState);
+        });
+
+        $('#orderFN_confirm_btn').click(function(event) {
+            $('#loding_page').show();
+            $('#orderFN_confirm_form').submit();
         });
     });
 

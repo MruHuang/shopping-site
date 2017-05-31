@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-
-
-
 use App\Http\Requests\RegisterRequest;
 use View;
 use Validator;
@@ -112,7 +109,7 @@ class RegisterController extends Controller
     	// return '申請失敗';
         $member = new memberSQL;
         $member->memberAccount = $Request->member_account;
-        $member->memberPassword = $Request->member_password;
+        $member->memberPassword = bcrypt($Request->member_password);
         $member->memberName = $Request->member_name;
         $member->memberEmail = $Request->member_Email;
         $member->memberBirthday = $Request->member_birthday;

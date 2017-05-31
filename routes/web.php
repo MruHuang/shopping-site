@@ -10,12 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('test',[
-// 	'as'=>"test",
-// 	'uses'=>function () {
-// 	   return View::make('welcome');
-// 	}
-// ]);
+Route::get('test',[
+	'as'=>"test",
+	'uses'=>function () {
+	   return View::make('partials.Loading');
+	}
+]);
 
 Route::get('/', function () {
    return View::make('Login',[
@@ -101,6 +101,18 @@ Route::get('Commoditypage/{ID}/{commodityClass}/{commodityArea}/{amount?}',[
 
 	]);
 
+Route::get('goCheckout/{ID}/{commodityClass}/{commodityArea}/{amount?}',[
+	'as'=>'goCheckout',
+	'uses'=>'SingleCommodityController@GoCheckout'
+
+	]);
+
+Route::get('goGroupbuyCheckout/{ID}/{commodityClass}/{commodityArea}/{amount?}',[
+	'as'=>'goGroupbuyCheckout',
+	'uses'=>'SingleCommodityController@GoGroupbuyCheckout'
+
+]);
+
 /*Route::get('SearchResult',[
 	'as'=>'SearchResult',
 	'uses'=>function () {
@@ -137,7 +149,12 @@ Route::get('GroupbuyShoppingCar',[
 		}
 ]);
 
-Route::get('DMC/{ID}/{speciestype}',[
+// Route::get('DMC/{ID}/{speciestype}',[
+// 	'as'=>'DelMemberCommodity',
+// 	'uses'=>'Member_commodityController@DelMemberCommodity'
+// ]);
+
+Route::post('DelMemberCommodity',[
 	'as'=>'DelMemberCommodity',
 	'uses'=>'Member_commodityController@DelMemberCommodity'
 ]);

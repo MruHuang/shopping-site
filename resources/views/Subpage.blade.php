@@ -132,7 +132,8 @@
                         	<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
                         </a></li>
                         </ul>
-                    </nav>
+                        <div>每頁12筆，第{{ $All['this_page'] }}/{{ (int)($All['count_page']/12) }}頁</div>
+                    </nav> 
             	</div>
         </div>
 	</div>

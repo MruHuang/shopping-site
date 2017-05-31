@@ -80,6 +80,7 @@ class TrackOrderController extends Controller
             $this->od->CancelOrder($orderID);
             if(!$this->lg->LoginSessionCheck()){
                 return View::make('Login',[
+                    'isRegistered'=>null,
                     'message_text'=>"請重新登入"
                 ]);
             }

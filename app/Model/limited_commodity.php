@@ -18,7 +18,7 @@ class limited_commodity extends Model
 
     public function scopeProduct($query){
         return $query
-        ->where('limited_commodity.isShelves',1)
+        ->where('limited_commodity.isShelves',true)
         ;
     }
 

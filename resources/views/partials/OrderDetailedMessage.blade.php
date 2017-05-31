@@ -1,5 +1,5 @@
 
-<div class="modal fade message_modal">
+<div class="modal fade message_modal" style="top: 100px; overflow:inherit ">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
@@ -47,7 +47,7 @@
                             <td>{{ $order_detailed[$i]['commodityName'] }}</td>
                             <td>一般商品</td>
                             <td>{{ $order_detailed[$i]['commodityAmount'] }}</td>
-                            <td>{{ $order_detailed[$i]['commodityPrice'] }}</td>
+                            <td>{{ (int)$order_detailed[$i]['commodityPrice']*(int)$order_detailed[$i]['commodityAmount'] }} 元</td>
                         @elseif($order_detailed[$i]['commodityArea'] == 'groupbuy')
                             <!-- <td><a href="{{ route('Commoditypage',[
                             'type'=>$order_detailed[$i]['commodityArea'],
@@ -55,7 +55,7 @@
                             <td>{{ $order_detailed[$i]['commodityName'] }}</td>
                             <td>團購商品</td>
                             <td>{{ $order_detailed[$i]['commodityAmount'] }}</td>
-                            <td>{{ $order_detailed[$i]['groupbuyPrice'] }}</td>
+                            <td>{{ $order_detailed[$i]['groupbuyPrice'] * $order_detailed[$i]['commodityAmount'] }} 元</td>
                         @else
                             <!-- <td><a href="{{ route('Commoditypage',[
                             'type'=>$order_detailed[$i]['commodityArea'],
@@ -63,7 +63,7 @@
                             <td>{{ $order_detailed[$i]['commodityName'] }}</td>
                             <td>限時限量商品</td>
                             <td>{{ $order_detailed[$i]['commodityAmount'] }}</td>
-                            <td>{{ $order_detailed[$i]['limitedPrice'] }}</td>
+                            <td>{{ $order_detailed[$i]['limitedPrice'] * $order_detailed[$i]['commodityAmount'] }} 元</td>
                         @endif
                         </tr>
                     @endfor

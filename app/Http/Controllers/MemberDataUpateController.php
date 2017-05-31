@@ -7,7 +7,7 @@ use \App\Http\Requests\MemberDataUpateRequest as MDU;
 
 use View;
 use Validator;
-use App\Model\Member as memberSQL;
+use \App\Model\Member as memberSQL;
 use App\Login\Login as LG;
 
 class MemberDataUpateController extends Controller
@@ -23,6 +23,7 @@ class MemberDataUpateController extends Controller
     	//	
 	    	if(!$this->lg->LoginSessionCheck()){
 	            return View::make('Login',[
+	            	'isRegistered'=>null,
 	                'message_text'=>"請重新登入"
 	            ]);
 	        }
@@ -43,19 +44,23 @@ class MemberDataUpateController extends Controller
 	    	$member_birthday = $Request->input('member_birthday');
 	    	$member_lineid = $Request->input('member_lineid');
 
-	    	$member =  memberSQL::LoginCheck(
-	    		$member_account,
-				$member_password
+	    	$member =  memberSQL::MemberCheck(
+	    		$member_account
 	    	)->first();
-	    	
-	    	if($new_member_password != null && $new_member_password == $new_member_password_again){
-				$member->memberPassword = $new_member_password; 
+
+	    	if($new_member_password != null){
+	    		if($new_member_password != $new_member_password_again 
+		    		|| !$this->lg->LoginCheckDataBase($member_account,$member_password) )
+		    	{
+		    		$message_text = "密碼輸入錯誤";
+		    		$user_Data = $this->lg->GetSessionData();
+		    		return View::make('MemberCenter',['message_text'=>$message_text,'user_Data'=>$user_Data]);
+		    	}else{
+		    		$member_password = $new_member_password;
+					$member->memberPassword = bcrypt($new_member_password);
+		    	}
 	    	}
-	    	else if($new_member_password != $new_member_password_again){
-	    		$message_text = "密碼輸入錯誤";
-	    		$user_Data = $this->lg->GetSessionData();
-	    		return View::make('MemberCenter',['message_text'=>$message_text,'user_Data'=>$user_Data]);
-	    	}
+
 			$member->memberPhone = $member_phone;
 			$member->memberAdd = $member_add;
 			$member->memberEmail = $member_Email;
@@ -74,6 +79,7 @@ class MemberDataUpateController extends Controller
     public function MemberCenter(){
     	if(!$this->lg->LoginSessionCheck()){
             return View::make('Login',[
+            	'isRegistered'=>null,
                 'message_text'=>"請重新登入"
             ]);
         }

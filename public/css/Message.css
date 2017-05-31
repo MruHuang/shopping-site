@@ -1,9 +1,8 @@
 .message_modal{
 	display: block;
 	opacity: 1;
-
-	
 }
+
 .message_modal .modal-dialog{
 	top: 100px;
 }

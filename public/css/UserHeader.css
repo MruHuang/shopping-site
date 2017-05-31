@@ -13,6 +13,13 @@ body {
     }
 }
 
+.login_title{
+    color: #094996; 
+    float: left; 
+    display: block;
+    font-size: 40px;
+}
+
 .panel-title{
     margin-top: 0;
     margin-bottom: 0;
@@ -44,7 +51,6 @@ h4{
 h3{
     font-size: 30px;
 }
-
 
 
 .btn{
