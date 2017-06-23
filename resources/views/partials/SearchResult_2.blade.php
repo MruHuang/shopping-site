@@ -5,8 +5,8 @@
 	</div>
 	<div class="panel-body">
 	    <div class="media">
-	        <a class="media-left search_commodity_img_sytle" href="{{ route('Commoditypage',['type'=>'groupbuy','ID'=>$AllInformation['data'][$i]['groupbuyID']]) }}">
-	            <img src="/{{ $AllInformation['data'][$i]['commodityPhotoA'] }}" alt="{{ $AllInformation['data'][$i]['commodityName'] }}" width="50%">
+	        <a class="media-left search_commodity_img_sytle" style="width: 200px;" href="{{ route('Commoditypage',['type'=>'groupbuy','ID'=>$AllInformation['data'][$i]['groupbuyID']]) }}">
+	            <img src="/{{ $AllInformation['data'][$i]['commodityPhotoA'] }}" alt="{{ $AllInformation['data'][$i]['commodityName'] }}" width="100%">
 	        </a>
 		    <div class="media-body">
 		    	<a href="{{ route('Commoditypage',['type'=>'groupbuy','ID'=>$AllInformation['data'][$i]['groupbuyID']]) }}">

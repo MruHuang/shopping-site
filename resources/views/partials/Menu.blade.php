@@ -17,7 +17,7 @@
             <a href="{{ route('MemberCenter') }}" class="btn btn-primary menu_btn">會員中心</a>
         </div>
         <div class="col-xs-2">
-            <a class="btn btn-primary menu_btn" disabled>積分：{{ $lg->LoginIntegral() }}</a>
+            <a class="btn btn-primary menu_btn" disabled>紅利點數：{{ $lg->LoginIntegral() }}</a>
         </div>
     </div>
 </div>
