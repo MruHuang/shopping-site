@@ -9,12 +9,13 @@
 @section('content')
 <div class="panel panel-info login_form_style">
   <div class="panel-heading clearfix">
-  	<img style="float: left; width: 18%;" src=" {{ asset('img/blueStar_logo.png') }}">
+  	<img style="float: left; width: 18%;" src=" {{ asset('img/BlueStarSC.png') }}">
     <h3 class="login_title">藍星購物</h3>
   </div>
   <div class="panel-body">
     <form role="form" method="POST" style="font-size: 20px;" action=" {{ route('LoginPost') }}  ">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="alert alert-warning">未加入會員者，請先完成註冊</div>
 	    <label>帳號</label>
 	    <input type="text" class="form-control" style="height: 45px; font-size: 18px;" name="member_account" placeholder="輸入帳號">
 	    <div style="margin-top: 20px;"></div>
@@ -36,10 +37,10 @@
   <div class="panel-footer" style="padding: 0px;">
 	<div class=" alert alert-success" style="margin: 0;">
 		<div class="row">
-			<div class="col-xs-offset-1">優質健康，環保節能</div>
+			<div class="col-xs-offset-1" style="font-size: 30px;">優質健康，環保節能</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-offset-6">團購優勢，共享優惠</div>
+			<div class="col-xs-offset-5" style="font-size: 30px;">團購優勢，共享優惠</div>
 		</div>
 	 	<!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
 	</div>

@@ -9,7 +9,7 @@
 @section('content')
 <div class="panel panel-info register_form_style">
   <div class="panel-heading clearfix">
-    <img style="float: left; width: 18%;" src=" {{ asset('img/blueStar_logo.png') }}">
+    <img style="float: left; width: 18%;" src=" {{ asset('img/BlueStarSC.png') }}">
     <a href="{{ route('Login',['isRegistered'=>'true','message_text'=>null]) }}"><h3 class="login_title" style="font-size: 45px;">藍星購物</h3></a>
   </div>
   <div class="panel-body">
@@ -18,9 +18,9 @@
             <h3>會員註冊</h3>
             <label>會員姓名</label>
             <input type="text" class="form-control" id ="member_name" name="member_name" placeholder="輸入姓名">
-            <label>會員帳號</label>
+            <label>會員帳號(自設，英文、數字無限制)</label>
             <input type="text" class="form-control" id ="member_account" name="member_account"  placeholder="輸入帳號">
-            <label>密碼</label>
+            <label>密碼(自設，英文、數字無限制)</label>
             <input type="password" class="form-control" id ="member_password" name="member_password" placeholder="輸入密碼">
             <label>再次輸入密碼</label>
             <input type="password" class="form-control" id ="member_password_again" name="member_password_again" placeholder="再次輸入密碼">
@@ -37,6 +37,7 @@
             <input type="date" class="form-control" id ="member_birthday" name="member_birthday" placeholder="輸入生日 Ex：1990-01-01" >
             <label>Line-id</label>
             <input type="text" class="form-control" id ="member_lineid" name="member_lineid" placeholder="輸入Line-id">
+            <div class="alert alert-success">為保障會員權益，加入會員必需要有現任會員推薦</div>
             <label>推薦人(限會員)</label>
             <input type="text" class="form-control" id ="recommender_name" name="recommender_name" placeholder="輸入推薦人">
             <label>推薦人手機(Ex:0912345678)</label>
@@ -93,7 +94,7 @@
                     我們將因應科技發展趨勢、相關法規之修訂或其他環境變遷等因素而對本網站隱私權保護作適當之修改，並且會在網站上張貼告示，以落實保障使用者隱私權之立意。<br/>
                     <br/>
                     八. 問題和建議<br/>
-                    如果您有任何問題或建議，請連絡我們 (此處設定連結鍵)</p>
+                    如果您有任何問題或建議，請連絡我們(bssc.tw@gmail.com)</p>
                     <label style="float: right">
                         <input type="checkbox" name="agree" >同意
                     </label>

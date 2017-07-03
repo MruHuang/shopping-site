@@ -1,13 +1,15 @@
 <nav class="navbar navbar-default navbar_sytle" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-             <a class="navbar-brand search_nav_title_style" style="color: #fff; font-size: 50px; margin-top: 10px;" href="{{ route('HomeGet') }}">藍星購物</a>
+            <a class="navbar-brand" href="#" style="padding: 0px;"><img src="{{ asset('img/BlueStarSC.png') }}" style="width: 90px;"></a>
+             <!-- <a class="navbar-brand search_nav_title_style" style="color: #fff; font-size: 50px; margin-top: 10px;" href="{{-- route('HomeGet') --}}">藍星購物</a> -->
         </div>
+        <div class="navbar-left"><a class="navbar-brand search_nav_title_style" style="color: #337ab7; font-size: 50px; margin-top: 10px;" href="{{ route('HomeGet') }}">藍星購物</a></div>
         <div class="search_nav_text_style">
-            <a href="{{ route('LogOut') }}" class="navbar-link navbar-text navbar-right"  style="color: #fff; font-size: 30px; margin-right: 25px;">登出</a>
-            <p class="navbar-text navbar-right"><a href="{{ route('MemberCenter') }}" class="navbar-link" style="color: #fff; font-size: 30px; margin-right: 10px;">會員中心</a></p>
-            <a href="{{ route('ShoppingCar',['speciestype'=>'Car']) }}" class="navbar-link navbar-text navbar-right" style="color: #fff; font-size: 30px; margin-right: 10px;">購物車</a>
-            <a href="{{ route('HomeGet') }}" class="navbar-link navbar-text navbar-right" style="color: #fff; font-size: 30px; margin-right: 0px;">首頁</a>
+            <a href="{{ route('LogOut') }}" class="navbar-link navbar-text navbar-right"  style="color: #337ab7; font-size: 30px; margin-right: 25px;">登出</a>
+            <p class="navbar-text navbar-right"><a href="{{ route('MemberCenter') }}" class="navbar-link" style="color: #337ab7; font-size: 30px; margin-right: 10px;">會員中心</a></p>
+            <a href="{{ route('ShoppingCar',['speciestype'=>'Car']) }}" class="navbar-link navbar-text navbar-right" style="color: #337ab7; font-size: 30px; margin-right: 10px;">購物車</a>
+            <a href="{{ route('HomeGet') }}" class="navbar-link navbar-text navbar-right" style="color: #337ab7; font-size: 30px; margin-right: 0px;">首頁</a>
              
              
         </div>

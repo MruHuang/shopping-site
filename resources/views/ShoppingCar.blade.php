@@ -103,7 +103,7 @@
                 @if($user_data['Integral']>0)
                 <div class="row" style="margin-left: 0px;margin-right: 0px;">
                     <div class="col-xs-9 " style="padding-left: 0px;">
-                        <label>可用積分</label>
+                        <label>可用紅利點數</label>
                         <input class="form-control" type="text" id="Integral" data-PIntegral='1'  value="{{ $user_data['Integral'] }}" disabled>
                     </div>
                     <div class="col-xs-3" >
@@ -117,7 +117,7 @@
                 </div>
                 @else
                 <div class="form-group" style="margin-bottom: 0px;">
-                    <div class="alert alert-warning"><label>積分小於等於零，無法使用積分</label></div>
+                    <div class="alert alert-warning"><label>紅利點數小於等於零，無法使用紅利點數</label></div>
                 </div>
                 @endif
                 <div class="form-group">

@@ -28,6 +28,10 @@
                         <label>地址</label>
                         <input class="form-control" type="text" value="{{ $order_detailed['order_data'][0]['deliveryAdd'] }}" disabled>
                     </div>
+                    <div class="form-group">
+                        <label>使用紅利點數</label>
+                        <input class="form-control" type="text" value="{{ $order_detailed['order_data'][0]['useIntegral'] }}" disabled>
+                    </div>
                 </div>
                 <table class="table table-bordered">
                     <tr>

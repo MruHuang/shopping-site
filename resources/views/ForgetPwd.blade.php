@@ -10,7 +10,7 @@
 
 <div class="panel panel-info forgetPwd_form_style" id="forgetPwd_page">
   <div class="panel-heading clearfix">
-    <img style="float: left; width: 18%;" src=" {{ asset('img/blueStar_logo.png') }}">
+    <img style="float: left; width: 18%;" src=" {{ asset('img/BlueStarSC.png') }}">
     <a href="{{ route('Login') }}"><h3 class="login_title">藍星購物</h3></a>
   </div>
   <div class="panel-body">

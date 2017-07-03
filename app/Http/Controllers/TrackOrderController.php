@@ -36,7 +36,7 @@ class TrackOrderController extends Controller
     		'AllInformation'=>$AllInformation
 		);
 
-    	//return $All;
+    	//return $order_detailed;
     	return View::make('TrackOrder',['All'=>$All,'order_detailed'=>$order_detailed,'message_text'=>$message_text]);
     }
 
