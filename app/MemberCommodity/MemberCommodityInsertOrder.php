@@ -43,6 +43,12 @@ class MemberCommodityInsertOrder
         ->update(['memberIntegral'=>$overIntegral]);
     }
 
+    public function SelectMemberMemberUseIntegral($ID){
+        return mbSQL::MemberIDCheck($ID)
+        ->select('memberUseIntegral')
+        ->get();
+    }
+
     public function UpdateMemberUseIntegral($ID,$UseIntegral){
         return mbSQL::MemberIDCheck($ID)
         ->update(['memberUseIntegral'=>$UseIntegral]);

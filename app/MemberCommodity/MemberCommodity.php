@@ -102,9 +102,10 @@ class MemberCommodity
             }
         }else{
             if($data_array['is_useIntegral'] == 'on'){
-                $tempUseIntegral = $this->mcio->SelectMemberMemberIntegral($data_array['memberID']);
-                $useIntegral = $tempUseIntegral[0]['memberIntegral'];
-                
+                $tempMemberIntegral = $this->mcio->SelectMemberMemberIntegral($data_array['memberID']);
+                $useIntegral = $tempMemberIntegral[0]['memberIntegral'];
+                $tempUseIntegral = $this->mcio->SelectMemberMemberUseIntegral($data_array['memberID']);
+                $memberUseIntegral = $tempUseIntegral[0]['memberUseIntegral'];
                 if($totalPrice>$useIntegral){
                     $totalPrice = $totalPrice - $useIntegral;
                     $overIntegral = 0;
@@ -115,7 +116,7 @@ class MemberCommodity
                 }
                 try{
                     $this->mcio->UpdateMemberIntegral($data_array['memberID'], $overIntegral);
-                    $this->mcio->UpdateMemberUseIntegral($data_array['memberID'], $useIntegral);
+                    $this->mcio->UpdateMemberUseIntegral($data_array['memberID'], $memberUseIntegral + $useIntegral);
                     $this->lg->UpdateSessionData();
                 }catch(\Exception $e){
                     return "程序錯誤";
