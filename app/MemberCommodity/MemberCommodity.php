@@ -169,11 +169,21 @@ class MemberCommodity
         );
         $orderID = $order_array[0]['orderID'];
         foreach ($data_array['jsondata'] as $key => $value) {
+            if($value['Area'] == 'commodity'){
+                $commodity_data = $this->mci->GetCommodity($value['ID']);
+                $buyPrice = $commodity_data[0]['commodityPrice'];
+            }else if($value['Area'] == 'timelimit'){
+                $commodity_data = $this->mci->GetTimelimitCommodity($value['ID']);
+                $buyPrice = $commodity_data[0]['limitedPrice'];
+            }else{
+                $buyPrice = 0;
+            }
             $this->mcio->InsertOrder_detailed(
                 $orderID,
                 $value['ID'],
                 $value['Area'],
-                $value['Amount']
+                $value['Amount'],
+                $buyPrice
             );
         }
         return 1;
