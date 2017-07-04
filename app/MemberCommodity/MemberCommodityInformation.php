@@ -79,6 +79,16 @@ class MemberCommodityInformation
         return $result;
     }
 
+    public function GetCommodity($ID){
+        $result = cmSQL::FindProduct($ID)->get();
+        return $result;
+    }
+
+    public function GetTimelimitCommodity($ID){
+        $result = lcSQL::FindProduct($ID)->get();
+        return $result;
+    }
+
     public function Getpromotion(){
         $result = ptSQL::get();
         return $result;
