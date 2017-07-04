@@ -94,6 +94,7 @@ class MemberCommodity
             $orderState = 'Ready';
         }
 
+        //判別積分
         $useIntegral = "0";
         if($data_array['orderclass'] == 'groupbuy'){
             if($data_array['is_useIntegral'] == 'on'){
@@ -101,26 +102,28 @@ class MemberCommodity
             }
         }else{
             if($data_array['is_useIntegral'] == 'on'){
-                $tempUseIntegral = $this->mcio->SelectMemberMemberIntegral($data_array['memberID']);
-                $useIntegral = $tempUseIntegral[0]['memberIntegral'];
-                
+                $tempMemberIntegral = $this->mcio->SelectMemberMemberIntegral($data_array['memberID']);
+                $useIntegral = $tempMemberIntegral[0]['memberIntegral'];
+                $tempUseIntegral = $this->mcio->SelectMemberMemberUseIntegral($data_array['memberID']);
+                $memberUseIntegral = $tempUseIntegral[0]['memberUseIntegral'];
                 if($totalPrice>$useIntegral){
                     $totalPrice = $totalPrice - $useIntegral;
                     $overIntegral = 0;
                 }else{
                     $overIntegral = $useIntegral - $totalPrice;
-                    $totalPrice = 0;
                     $useIntegral = $totalPrice;
+                    $totalPrice = 0;
                 }
                 try{
-                    $this->mcio->UpdateMemberIntegral($data_array['memberID'],$overIntegral);
+                    $this->mcio->UpdateMemberIntegral($data_array['memberID'], $overIntegral);
+                    $this->mcio->UpdateMemberUseIntegral($data_array['memberID'], $memberUseIntegral + $useIntegral);
                     $this->lg->UpdateSessionData();
                 }catch(\Exception $e){
                     return "程序錯誤";
                 }
             }
         }
-
+        //判別運費
         $promotion_data = $this->mcio->SelectPromotion();
         if($data_array['orderclass'] != 'groupbuy'){
             $freight = $promotion_data[0]['freight'];
