@@ -116,7 +116,8 @@ class MemberCommodityInsertOrder
         $orderID,
         $commodityID,
         $commodityArea,
-        $commodityAmount
+        $commodityAmount,
+        $commodityBuyPrice
     ){
         try{
             $inset_order_detailed = new oddSQL();  
@@ -124,6 +125,7 @@ class MemberCommodityInsertOrder
             $inset_order_detailed->commodityID = $commodityID;
             $inset_order_detailed->commodityArea = $commodityArea;
             $inset_order_detailed->commodityAmount = $commodityAmount;
+            $inset_order_detailed->buyPrice = $commodityBuyPrice;
             $inset_order_detailed->save();
             $result = 1;
         }catch(Exception $e){
