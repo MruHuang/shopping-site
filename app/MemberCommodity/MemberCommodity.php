@@ -175,15 +175,20 @@ class MemberCommodity
             if($value['Area'] == 'commodity'){
                 $commodity_data = $this->mci->GetCommodity($value['ID']);
                 $buyPrice = $commodity_data[0]['commodityPrice'];
+                $originalID = $commodity_data[0]['commodityID'];
             }else if($value['Area'] == 'timelimit'){
                 $commodity_data = $this->mci->GetTimelimitCommodity($value['ID']);
                 $buyPrice = $commodity_data[0]['limitedPrice'];
+                $originalID = $commodity_data[0]['commodityID'];
             }else{
+                $commodity_data = $this->mci->GetGroupbuyCommodity($value['ID']);
                 $buyPrice = 0;
+                $originalID = $commodity_data[0]['commodityID'];
             }
             $this->mcio->InsertOrder_detailed(
                 $orderID,
                 $value['ID'],
+                $originalID,
                 $value['Area'],
                 $value['Amount'],
                 $buyPrice
