@@ -126,6 +126,7 @@ class MemberCommodityInsertOrder
     public function InsertOrder_detailed(
         $orderID,
         $commodityID,
+        $originalID,
         $commodityArea,
         $commodityAmount,
         $commodityBuyPrice
@@ -134,6 +135,7 @@ class MemberCommodityInsertOrder
             $inset_order_detailed = new oddSQL();  
             $inset_order_detailed->orderID = $orderID;
             $inset_order_detailed->commodityID = $commodityID;
+            $inset_order_detailed->originalID = $originalID;
             $inset_order_detailed->commodityArea = $commodityArea;
             $inset_order_detailed->commodityAmount = $commodityAmount;
             $inset_order_detailed->buyPrice = $commodityBuyPrice;
