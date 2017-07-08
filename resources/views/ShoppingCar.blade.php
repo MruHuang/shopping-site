@@ -84,8 +84,12 @@
                     <label>結帳方式</label>
                     <select class="form-control" name="checkoutMethod">
                         <option>ATM</option>
-                        <option>貨到付款</option>
+                        {{-- <option>貨到付款</option> --}}
+
                     </select>
+                    <div class='alert alert-info' style='margin-left: 20px;'>
+                    建議您使用快速方便的ATM轉帳!<br>以金融卡在全省任何一部ATM自動櫃員機，<br>都能執行交易，十分安全方便
+                    </div>
                     <p class="help-block" id="free_freight" data-free_freight="{{ $freightInformation['freeFreight'] }}" >{{ $freightInformation['freeFreight'] }}元以上免運</p>
                 </div>
                 <div class="form-group" >
