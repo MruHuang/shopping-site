@@ -94,4 +94,8 @@ class MemberCommodityInformation
         return $result;
     }
 
+    public function UpdateMemberCommodity($ID,$Amount){
+        mcSQL::GetAllData($ID)->update(['commodityAmount'=>$Amount]);
+    }
+
 }

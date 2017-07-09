@@ -39,6 +39,11 @@ class MemberCommodity
             return $value['user_time'];
         }));
     }
+    public function UpdateMemberCommodity($json_data){
+        foreach ($json_data as $key => $value) {
+            $this->mci->UpdateMemberCommodity($json_data[$key]->userID,$json_data[$key]->Amount);
+        }
+    }
     
     public function InsertToOrder($data_array){
         $totalPrice = 0;

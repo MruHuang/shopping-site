@@ -132,6 +132,11 @@ Route::get('ShoppingCar/{speciestype}',[
 	'uses'=>'Member_commodityController@Member_commodity'
 ]);
 
+Route::post('Checkout',[
+	'as'=>'Checkout',
+	'uses'=>'Member_commodityController@Checkout'
+]);
+
 Route::post('OrderShoppingCar',[
 	'as'=>'OrderShoppingCar',
 	'uses'=>'Member_commodityController@OrderShoppingCar'
