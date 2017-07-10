@@ -114,56 +114,56 @@ class Member_commodityController extends Controller
         return $result;
     }
 
-    public function OrderShoppingCar(Request $Request){
-    	//return $Request->all();
-        if(!$this->lg->LoginSessionCheck()){
-            return View::make('Login',[
-                'isRegistered'=>null,
-                'message_text'=>"請重新登入"
-            ]);
-        }
+    public function Checkout(Request $Request){
+    	return $Request->all();
+        // if(!$this->lg->LoginSessionCheck()){
+        //     return View::make('Login',[
+        //         'isRegistered'=>null,
+        //         'message_text'=>"請重新登入"
+        //     ]);
+        // }
         
-        $user_ID = $this->lg->LoginSessionID();
-        $userIntegral = $this->lg->LoginIntegral();
-        $jsondata = $Request->jsondata;
-        $json_array = array();
-        $json_data = json_decode(json_decode($jsondata));
-        $recipient = $Request->recipient;
-        $deliveryAdd = $Request->deliveryAdd;
-        $checkoutMethod = $Request->checkoutMethod;
-        $is_useIntegral = $Request->is_useIntegral;
-        $speciestype = $Request->speciestype;
+        // $user_ID = $this->lg->LoginSessionID();
+        // $userIntegral = $this->lg->LoginIntegral();
+        // $jsondata = $Request->jsondata;
+        // $json_array = array();
+        // $json_data = json_decode(json_decode($jsondata));
+        // $recipient = $Request->recipient;
+        // $deliveryAdd = $Request->deliveryAdd;
+        // $checkoutMethod = $Request->checkoutMethod;
+        // $is_useIntegral = $Request->is_useIntegral;
+        // $speciestype = $Request->speciestype;
 
         
-        $result='';
-        try{
-            $promotionData = $this->mc->Getpromotion();
-            $this->mc->UpdateMemberCommodity($json_data);
-            $AllInformation = $this->mc->MemberCommodity(
-                $user_ID,
-                $speciestype
-		    );
-            $result='成功';
-            $data = array(
-                'json_data'=>$jsondata,
-                'AllInformation'=>$AllInformation,
-                'recipient'=>$recipient,
-                'deliveryAdd'=>$deliveryAdd,
-                'checkoutMethod'=>$checkoutMethod,
-                'is_useIntegral'=>$is_useIntegral,
-                'userIntegral'=>$userIntegral,
-                'freightInformation'=>$promotionData[0],
-                'message_text'=>null
-            );
-            //return $data;
-            return View::make('Checkout',$data);
-        }catch(\Exception $e){
-            $result=$e;
-        }
+        // $result='';
+        // try{
+        //     $promotionData = $this->mc->Getpromotion();
+        //     $this->mc->UpdateMemberCommodity($json_data);
+        //     $AllInformation = $this->mc->MemberCommodity(
+        //         $user_ID,
+        //         $speciestype
+		//     );
+        //     $result='成功';
+        //     $data = array(
+        //         'json_data'=>$jsondata,
+        //         'AllInformation'=>$AllInformation,
+        //         'recipient'=>$recipient,
+        //         'deliveryAdd'=>$deliveryAdd,
+        //         'checkoutMethod'=>$checkoutMethod,
+        //         'is_useIntegral'=>$is_useIntegral,
+        //         'userIntegral'=>$userIntegral,
+        //         'freightInformation'=>$promotionData[0],
+        //         'message_text'=>null
+        //     );
+        //     //return $data;
+        //     return View::make('Checkout',$data);
+        // }catch(\Exception $e){
+        //     $result=$e;
+        // }
     }
 
-    public function Checkout(Request $Request){
-        return $Request->all();
+    public function OrderShoppingCar(Request $Request){
+        //return $Request->all();
         $result_message = "請購買商品";
         if(!$this->lg->LoginSessionCheck()){
             return View::make('Login',[
@@ -172,11 +172,12 @@ class Member_commodityController extends Controller
             ]);
         }
         $user_data = $this->lg->LoginSessionID();
-     
+        $random_number = strval(time()).str_random(5);
         try{
             $result_message = DB::transaction(function() use(
                 $Request,
                 $user_data,
+                $random_number,
                 $result_message
             ){
                 $jsondata = $Request->jsondata;
@@ -191,6 +192,7 @@ class Member_commodityController extends Controller
                 }
 
                 $result = $this->mc->InsertToOrder(array(
+                    'random_number'=>$random_number,
                     'jsondata'=>$josn_array,
                     'memberID'=>$user_data,
                     'recipient'=>$recipient,
@@ -210,11 +212,21 @@ class Member_commodityController extends Controller
 
 	            return $result_message;
             });
-            
+            if($result_message =='訂購完成'){
+                $OrderData = $this->mc->GetOrder($random_number);
+                $OrderDetailed = $this->mc->GetOrderDetailed($OrderData[0]['orderID']);
+                if($checkoutMethod == 'ATM'){
+                    $message_text= '下單已完成，請前往ATM結帳';
+                }else if($checkoutMethod == 'CreditCard'){
+                    $message_text= '下單已完成，請點選下方結帳鈕進行線上刷卡結帳';
+                }
+                $data = array('OrderData'=>$OrderData,'OrderDetailed'=>$OrderDetailed,'message_text'=>$message_text);
+                return View::make('Checkout',$data);
+            }else{
+                return $this->Member_commodity('Car',$result_message);
+            }
         }catch (\Exception $e){
             $result_message = $e;
-        }
-        finally{
             return $this->Member_commodity('Car',$result_message);
         }
     }
