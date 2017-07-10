@@ -59,7 +59,7 @@
     @if(count($AllInformation)!=0)
     	<div class="row">
 	        <div class="col-xs-4 col-xs-offset-4" style="margin-bottom: 20px; ">
-	            <button class="btn btn-success" id="ordering" style="width: 100%;"> 結帳 </button>
+	            <button class="btn btn-success" id="ordering" style="width: 100%;"> 前往下單 </button>
 	        </div><!-- 
             <div class="col-xs-2" style="margin-bottom: 20px; ">
                 
@@ -71,6 +71,7 @@
         <div class="panel-body" >
             <form role="form"  method="POST" action=" {{ Route('OrderShoppingCar') }} "> 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="speciestype" value="Car">
                 <input type="hidden" id="jsondata" name="jsondata" >
                 <div class="form-group">
                     <label>收件人</label>
@@ -129,7 +130,7 @@
                     <input class="form-control" type="text" id="final_price"  value="12285元" disabled>
                 </div>
                 <div class="text-right">
-                    <button type="submit" id="checkout" type="submit" class="btn btn-success">結帳</button>
+                    <button type="submit" id="checkout" type="submit" class="btn btn-success">下單</button>
                 </div>
             </form>
         </div>

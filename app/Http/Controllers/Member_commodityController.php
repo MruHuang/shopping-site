@@ -123,122 +123,47 @@ class Member_commodityController extends Controller
             ]);
         }
         
-        $user_data = $this->lg->LoginSessionID();
-
+        $user_ID = $this->lg->LoginSessionID();
+        $userIntegral = $this->lg->LoginIntegral();
         $jsondata = $Request->jsondata;
         $json_array = array();
         $json_data = json_decode(json_decode($jsondata));
-        $result='';
-        try{
-            $this->mc->UpdateMemberCommodity($json_data);
-            $result='成功';
-        }catch(\Exception $e){
-            $result=$e;
-        }finally{
-            return $result;
-        }
-        
-        
-
-        // try{
-        //     $result_message = DB::transaction(function() use(
-        //         $Request,
-        //         $user_data,
-        //         $result_message
-        //     ){
-        //         $jsondata = $Request->jsondata;
-        //         $recipient = $Request->recipient;
-        //         $deliveryAdd = $Request->deliveryAdd;
-        //         $checkoutMethod = $Request->checkoutMethod;
-        //         $is_useIntegral = $Request->is_useIntegral;
-        //         $josn_array = array();
-        //         $json_data = json_decode(json_decode($jsondata));
-        //         foreach ($json_data as $key => $value) {
-        //             array_push($josn_array, (array)$json_data[$key]);
-        //         }
-
-        //         $result = $this->mc->InsertToOrder(array(
-        //             'jsondata'=>$josn_array,
-        //             'memberID'=>$user_data,
-        //             'recipient'=>$recipient,
-        //             'deliveryAdd'=>$deliveryAdd,
-        //             'checkoutMethod'=>$checkoutMethod,
-        //             'is_useIntegral'=>$is_useIntegral,
-        //             'orderclass'=>'nogroupbuy'
-        //         ));
-
-        //     	if ($result){
-        //     		foreach ($json_data as $key => $value) {
-        //     			$this->thisDelMemberCommodity($json_data[$key]->userID,'Car');
-        //     		}
-        //     		$result_message = "訂購完成";
-	    //         }else  
-	    //         	$result_message = "訂購失敗 (".$result.")";
-
-	    //         return $result_message;
-        //     });
-            
-
-            
-        //     //$result_message = '123';
-        // }catch (\Exception $e){
-        //     // return View::make('Login',[
-        //     //     'message_text'=>$e
-        //     // ]);
-        //     $result_message = $e;
-        // }
-        // finally{
-        //     //return $result_message;
-        //     return $this->Member_commodity('Car',$result_message);
-        // }
-    }
-
-    public function OrderGroupbuyShoppingCar(Request $Request){
-        $result_message = "請購買商品";
-        $jsondata = $Request->jsondata;
         $recipient = $Request->recipient;
         $deliveryAdd = $Request->deliveryAdd;
         $checkoutMethod = $Request->checkoutMethod;
         $is_useIntegral = $Request->is_useIntegral;
-        if(!$this->lg->LoginSessionCheck()){
-            return View::make('Login',[
-                'isRegistered'=>null,
-                'message_text'=>"請重新登入"
-            ]);
-        }
-        $user_data = $this->lg->LoginSessionID();
+        $speciestype = $Request->speciestype;
 
-        $josn_array = array();
-        $json_data = json_decode(json_decode($jsondata));
+        
+        $result='';
         try{
-            foreach ($json_data as $key => $value) {
-                array_push($josn_array, (array)$json_data[$key]);
-                //return $josn_array;
-                $result =$this->mc->InsertToOrder(array(
-                    'jsondata'=>$josn_array,
-                    'memberID'=>$user_data,
-                    'recipient'=>$recipient,
-                    'deliveryAdd'=>$deliveryAdd,
-                    'checkoutMethod'=>$checkoutMethod,
-                    'is_useIntegral'=>$is_useIntegral,
-                    'orderclass'=>'groupbuy'
-                ));
-                $josn_array = null;
-                $josn_array = array();
-                if ($result){
-                    $this->thisDelMemberCommodity($json_data[$key]->userID,'Groupbuy');
-                    $result_message = "訂購完成";
-                }else $result_message = "訂購失敗 (".$result.")";
-                
-            }
+            $promotionData = $this->mc->Getpromotion();
+            $this->mc->UpdateMemberCommodity($json_data);
+            $AllInformation = $this->mc->MemberCommodity(
+                $user_ID,
+                $speciestype
+		    );
+            $result='成功';
+            $data = array(
+                'json_data'=>$jsondata,
+                'AllInformation'=>$AllInformation,
+                'recipient'=>$recipient,
+                'deliveryAdd'=>$deliveryAdd,
+                'checkoutMethod'=>$checkoutMethod,
+                'is_useIntegral'=>$is_useIntegral,
+                'userIntegral'=>$userIntegral,
+                'freightInformation'=>$promotionData[0],
+                'message_text'=>null
+            );
+            //return $data;
+            return View::make('Checkout',$data);
         }catch(\Exception $e){
-            $result_message = $e;
-        }finally{
-            return $this->Member_commodity('Groupbuy',$result_message);
+            $result=$e;
         }
     }
 
     public function Checkout(Request $Request){
+        return $Request->all();
         $result_message = "請購買商品";
         if(!$this->lg->LoginSessionCheck()){
             return View::make('Login',[
@@ -291,6 +216,51 @@ class Member_commodityController extends Controller
         }
         finally{
             return $this->Member_commodity('Car',$result_message);
+        }
+    }
+
+    public function OrderGroupbuyShoppingCar(Request $Request){
+        $result_message = "請購買商品";
+        $jsondata = $Request->jsondata;
+        $recipient = $Request->recipient;
+        $deliveryAdd = $Request->deliveryAdd;
+        $checkoutMethod = $Request->checkoutMethod;
+        $is_useIntegral = $Request->is_useIntegral;
+        if(!$this->lg->LoginSessionCheck()){
+            return View::make('Login',[
+                'isRegistered'=>null,
+                'message_text'=>"請重新登入"
+            ]);
+        }
+        $user_data = $this->lg->LoginSessionID();
+
+        $josn_array = array();
+        $json_data = json_decode(json_decode($jsondata));
+        try{
+            foreach ($json_data as $key => $value) {
+                array_push($josn_array, (array)$json_data[$key]);
+                //return $josn_array;
+                $result =$this->mc->InsertToOrder(array(
+                    'jsondata'=>$josn_array,
+                    'memberID'=>$user_data,
+                    'recipient'=>$recipient,
+                    'deliveryAdd'=>$deliveryAdd,
+                    'checkoutMethod'=>$checkoutMethod,
+                    'is_useIntegral'=>$is_useIntegral,
+                    'orderclass'=>'groupbuy'
+                ));
+                $josn_array = null;
+                $josn_array = array();
+                if ($result){
+                    $this->thisDelMemberCommodity($json_data[$key]->userID,'Groupbuy');
+                    $result_message = "訂購完成";
+                }else $result_message = "訂購失敗 (".$result.")";
+                
+            }
+        }catch(\Exception $e){
+            $result_message = $e;
+        }finally{
+            return $this->Member_commodity('Groupbuy',$result_message);
         }
     }
 }

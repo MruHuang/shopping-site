@@ -10,10 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test',[
+Route::get('test/{checkoutMethod?}',[
 	'as'=>"test",
-	'uses'=>function () {
-	   return View::make('partials.Loading');
+	'uses'=>function ($checkoutMethod = 'ATM') {
+	   return View::make('Checkout',['message_text'=>null,'checkoutMethod'=>$checkoutMethod]);
 	}
 ]);
 
