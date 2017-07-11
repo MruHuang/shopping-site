@@ -71,6 +71,17 @@ Route::group(['prefix'=>'Login'],function(){
 		'uses'=>'LoginController@LogOut'
 	]);
 });
+//信用卡
+Route::group(['prefix'=>'CreditCard'],function(){
+	Route::post('BackData',[
+		'as'=>'CreditCard',
+		'uses'=>'CreditCardController@BackData'
+	]);
+	Route::get('BackData',[
+		'as'=>'CreditCard',
+		'uses'=>'CreditCardController@BackData'
+	]);
+});
 
 Route::post('Register',[
 	'as'=>'RegisterPost',
