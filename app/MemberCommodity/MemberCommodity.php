@@ -39,6 +39,11 @@ class MemberCommodity
             return $value['user_time'];
         }));
     }
+    public function UpdateMemberCommodity($json_data){
+        foreach ($json_data as $key => $value) {
+            $this->mci->UpdateMemberCommodity($json_data[$key]->userID,$json_data[$key]->Amount);
+        }
+    }
     
     public function InsertToOrder($data_array){
         $totalPrice = 0;
@@ -141,10 +146,10 @@ class MemberCommodity
             $orderclass = 'groupbuy';
         }
         //新增訂單
-        $random_number = strval(time()).str_random(5);
+        // $random_number = strval(time()).str_random(5);
         $this->mcio->InsertOrder(
             $data_array['memberID'],
-            $random_number,
+            $data_array['random_number'],
             $is_ordered,
             $totalPrice,
             $orderState,
@@ -159,7 +164,7 @@ class MemberCommodity
         //新增訂單詳細資訊
         $order_array = $this->mcio->SelectOrderID(
             $data_array['memberID'],
-            $random_number,
+            $data_array['random_number'],
             $totalPrice,
             $orderState,
             $data_array['recipient'],
@@ -199,6 +204,16 @@ class MemberCommodity
     
     public function Getpromotion(){
         $result = $this->mci->Getpromotion();
+        return $result;
+    }
+
+    public function GetOrder($random_number){
+        $result = $this->mci->GetOrder($random_number);
+        return $result;
+    }
+
+    public function GetOrderDetailed($ID){
+        $result = $this->mci->GetOrderDetailed($ID);
         return $result;
     }
 

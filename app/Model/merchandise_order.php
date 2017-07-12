@@ -26,6 +26,10 @@ class merchandise_order extends Model
     	$query->where('randomNum', $ONO);
     }
 
+    public function scopeFindRandomNumber($query,$random_number){
+    	$query->where('randomNum',$random_number);
+    }
+
     public function scopeCheckoutMethod($query){
     	$query->where('checkoutMethod','ATM');
     }

@@ -8,8 +8,10 @@ use App\MemberCommodity\MemberCommodity as MC;
 use App\MemberCommodity\MemberCommodityCount as MCC;
 use App\Login\Login as LG;
 use App\Model\Member_commodity as mcSQL;
+use App\CreditCard\Transaction as CCT;
 use View;
 use DB;
+use Log;
 
 class Member_commodityController extends Controller
 {
@@ -17,10 +19,12 @@ class Member_commodityController extends Controller
     private $lg;
     private $mc;
     private $mcc;
-    public function __construct(LG $lg,MC $mc, MCC $mcc){
+    private $cct;
+    public function __construct(LG $lg,MC $mc, MCC $mcc,CCT $cct){
         $this->lg = $lg;
         $this->mc = $mc;
         $this->mcc = $mcc;
+        $this->cct = $cct;
     }
 
     public function Member_commodity($speciestype = null,$message_text = null
@@ -114,8 +118,96 @@ class Member_commodityController extends Controller
         return $result;
     }
 
-    public function OrderShoppingCar(Request $Request){
+    public function Checkout(Request $Request){
     	//return $Request->all();
+        $random_number = $Request->input('randomNum');
+        $OrderData = $this->mc->GetOrder($random_number);
+        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+            Log::info('進入CCT');
+            return $this->cct->Transaction($random_number);
+            // $ONO = $random_number;
+            // $MID = env('MID', null);
+            // $MAC_KEY = env('MAC_KEY',null);
+            
+            // //檢查單子有無結帳
+            // // $checkONO_url = "https://acqtest.esunbank.com.tw/ACQQuery/esuncard/txnf0180";
+            // // $data = array(
+            // //     "MID"=>$MID,
+            // //     "ONO"=>$ONO,
+            // // );
+            // // $data_json = json_encode($data);
+		    // // $mac = hash('sha256', $data_json.$MAC_KEY);
+		    // // $ksn = 1;
+            // // $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
+            // // $this->checkONO($checkONO_url,$postdata);
+            // //線上刷卡
+            // $this->CCT->Transaction($random_number);
+        }else if($OrderData[0]['checkoutMethod']=='ATM') {
+            return  redirect()->route('TrackOrder',['state'=>'Unpaid']);
+        }
+    }
+
+    public function test(){
+        $ONO = "D0001";
+        $TA = "100";
+        $MID = env('MID', null);
+        $TID = env('TID', null);
+        $MAC_KEY = env('MAC_KEY',null);
+        $checkONO_url = "https://acqtest.esunbank.com.tw/ACQQuery/esuncard/txnf0180";
+        $url2 ='https://acqtest.esunbank.com.tw/ACQTrans/esuncard/txnf014s';
+        //檢查單子有無結帳
+        $data = array(
+            "MID"=>$MID,
+            "ONO"=>$ONO
+        );
+
+
+        // $U = route('POSTest');
+        // $data2 = array(
+		// 	"ONO"=>$ONO,
+		// 	"U"=>$U,
+		// 	"MID"=>$MID,
+		// 	"TA"=>$TA,
+		// 	"TID"=>$TID,
+		// );
+
+
+        $data_json = json_encode($data);
+	    $mac = hash('sha256', $data_json+$MAC_KEY);
+	    $ksn = 1;
+        $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn,'url'=>$checkONO_url);
+        return View::make('POSTCreditCard',$postdata);
+        // $this->checkONO($checkONO_url,$postdata);
+    }
+
+    public function GetCreditCard(Request $Request){
+    	return $Request->all();
+
+    }
+
+    public function checkONO($url,$data){
+    	$ch = curl_init();
+    	$options = array(
+		  CURLOPT_URL=>$url,
+		  CURLOPT_REFERER=>$url,
+		  CURLOPT_FOLLOWLOCATION =>true,
+		  CURLOPT_ENCODING=>"Big5",
+		  CURLOPT_RETURNTRANSFER=>true,
+		  CURLOPT_AUTOREFERER=>0,
+		  CURLOPT_POST=>true,
+		  CURLOPT_POSTFIELDS=>http_build_query($data), // 直接給array
+		  CURLOPT_CONNECTTIMEOUT=>10,
+		  CURLOPT_TIMEOUT=>30,
+		  CURLOPT_HEADER=>0,
+		);
+		curl_setopt_array($ch, $options);
+		$result = curl_exec($ch);
+		curl_close($ch);
+        echo $result;
+    }
+
+    public function OrderShoppingCar(Request $Request){
+        //return $Request->all();
         $result_message = "請購買商品";
         if(!$this->lg->LoginSessionCheck()){
             return View::make('Login',[
@@ -124,11 +216,13 @@ class Member_commodityController extends Controller
             ]);
         }
         $user_data = $this->lg->LoginSessionID();
-     
+        $random_number = strval(time()).str_random(5);
+        $checkoutMethod = $Request->checkoutMethod;
         try{
             $result_message = DB::transaction(function() use(
                 $Request,
                 $user_data,
+                $random_number,
                 $result_message
             ){
                 $jsondata = $Request->jsondata;
@@ -143,6 +237,7 @@ class Member_commodityController extends Controller
                 }
 
                 $result = $this->mc->InsertToOrder(array(
+                    'random_number'=>$random_number,
                     'jsondata'=>$josn_array,
                     'memberID'=>$user_data,
                     'recipient'=>$recipient,
@@ -162,18 +257,21 @@ class Member_commodityController extends Controller
 
 	            return $result_message;
             });
-            
-
-            
-            //$result_message = '123';
+            if($result_message =='訂購完成'){
+                $OrderData = $this->mc->GetOrder($random_number);
+                $OrderDetailed = $this->mc->GetOrderDetailed($OrderData[0]['orderID']);
+                if($checkoutMethod == 'ATM'){
+                    $message_text= '下單已完成，請前往ATM結帳';
+                }else if($checkoutMethod == 'CreditCard'){
+                    $message_text= '下單已完成，請點選下方結帳鈕進行線上刷卡結帳';
+                }
+                $data = array('OrderData'=>$OrderData,'OrderDetailed'=>$OrderDetailed,'message_text'=>$message_text);
+                return View::make('Checkout',$data);
+            }else{
+                return $this->Member_commodity('Car',$result_message);
+            }
         }catch (\Exception $e){
-            // return View::make('Login',[
-            //     'message_text'=>$e
-            // ]);
             $result_message = $e;
-        }
-        finally{
-            //return $result_message;
             return $this->Member_commodity('Car',$result_message);
         }
     }

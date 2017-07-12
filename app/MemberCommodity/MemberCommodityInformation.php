@@ -8,7 +8,9 @@ use App\Model\limited_commodity as lcSQL;
 use App\Model\Member as mbSQL;
 use App\Model\Member_commodity as mcSQL;
 use App\Model\merchandise_order as odSQL;
+use App\Model\order_detailed as oddSQL;
 use App\Model\promotion as ptSQL;
+use DB;
 
 class MemberCommodityInformation
 {
@@ -91,6 +93,29 @@ class MemberCommodityInformation
 
     public function Getpromotion(){
         $result = ptSQL::get();
+        return $result;
+    }
+
+    public function UpdateMemberCommodity($ID,$Amount){
+        mcSQL::GetAllData($ID)->update(['commodityAmount'=>$Amount]);
+    }
+
+    public function GetOrder($random_number){
+        $result = odSQL::FindRandomNumber($random_number)->get();
+        return $result;
+    }
+
+    public function GetOrderDetailed($orderID){
+        $result = oddSQL::GetOrderID($orderID)
+        ->join('commodity','commodity.commodityID','order_detailed.originalID')
+        ->select(DB::raw("
+            order_detailed.ID,
+            order_detailed.originalID,
+            commodity.commodityName,
+            order_detailed.buyPrice,
+            order_detailed.commodityArea,
+            order_detailed.commodityAmount"))
+        ->get();
         return $result;
     }
 

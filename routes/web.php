@@ -12,9 +12,7 @@
 */
 Route::get('test',[
 	'as'=>"test",
-	'uses'=>function () {
-	   return View::make('partials.Loading');
-	}
+	'uses'=>'Member_commodityController@test'
 ]);
 
 Route::get('/', function () {
@@ -143,6 +141,11 @@ Route::get('ShoppingCar/{speciestype}',[
 	'uses'=>'Member_commodityController@Member_commodity'
 ]);
 
+Route::post('Checkout',[
+	'as'=>'Checkout',
+	'uses'=>'Member_commodityController@Checkout'
+]);
+
 Route::post('OrderShoppingCar',[
 	'as'=>'OrderShoppingCar',
 	'uses'=>'Member_commodityController@OrderShoppingCar'
@@ -192,6 +195,11 @@ Route::post('TrackOrderFive',[
 	'uses'=>'TrackOrderController@OrderUpdateFiveNumber'
 ]);
 
+Route::post('TrackOrderCreditCard',[
+	'as'=>'TrackOrderCreditCard',
+	'uses'=>'TrackOrderController@TrackOrderCreditCard'
+]);
+
 Route::get('cancelOrder/{orderID?}',[
 	'as'=>'cancelOrder',
 	'uses'=>'TrackOrderController@CancelOrder'
@@ -237,4 +245,9 @@ Route::get('getmsg',function(){
 Route::get('SingleOrder/{orderID}/{orderState}',[
 	'as'=>'SingleOrder',
 	'uses'=>'TrackOrderController@OrderControllerDetailed'
+]);
+
+Route::get('GetCreditCard',[
+	'as'=>"GetCreditCard",
+	'uses'=>'Member_commodityController@GetCreditCard'
 ]);

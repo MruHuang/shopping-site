@@ -75,7 +75,7 @@
     @if(count($AllInformation)!=0)
     <div class="row">
         <div class="col-xs-4 col-xs-offset-4" style="margin-bottom: 20px; ">
-            <button class="btn btn-success" id="ordering" style="width: 100%;"> 結帳 </button>
+            <button class="btn btn-success" id="ordering" style="width: 100%;"> 前往下單 </button>
         </div>
     </div>
     @endif
@@ -97,8 +97,11 @@
                     <label>結帳方式</label>
                     <select class="form-control" name="checkoutMethod">
                         <option>ATM</option>
-                        <option>貨到付款</option>
+                        {{-- <option>貨到付款</option> --}}
                     </select>
+                    <div class='alert alert-info' style='margin-left: 20px;'>
+                    建議您使用快速方便的ATM轉帳!<br>以金融卡在全省任何一部ATM自動櫃員機，<br>都能執行交易，十分安全方便
+                    </div>
                     <p class="help-block" id="free_freight" data-free_freight="{{ $freightInformation['freeFreight'] }}" >{{ $freightInformation['freeFreight'] }}元以上免運</p>
                 </div>
                 <div class="form-group" >
@@ -111,7 +114,7 @@
                 </div>
                 <!-- <div class="row" style="margin-left: 0px;margin-right: 0px;">
                     <div class="col-xs-9 " style="padding-left: 0px;">
-                        <label>可用積分</label>
+                        <label>可用紅利點數</label>
                         <input class="form-control" type="text" id="Integral" data-PIntegral='10'  value="{{ $user_data['Integral'] }}" disabled>
                     </div>
                     <div class="col-xs-3" >
@@ -124,7 +127,7 @@
                     </div>
                 </div> -->
                 <div class="text-right">
-                    <button type="submit" id="checkout" type="submit" class="btn btn-success">結帳</button>
+                    <button type="submit" id="checkout" type="submit" class="btn btn-success">下單</button>
                 </div>
             </form>
         </div>
