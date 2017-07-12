@@ -10,11 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test/{checkoutMethod?}',[
+Route::get('test',[
 	'as'=>"test",
-	'uses'=>function ($checkoutMethod = 'ATM') {
-	   return View::make('Checkout',['message_text'=>null,'checkoutMethod'=>$checkoutMethod]);
-	}
+	'uses'=>'Member_commodityController@test'
 ]);
 
 Route::get('/', function () {
@@ -186,6 +184,11 @@ Route::post('TrackOrderFive',[
 	'uses'=>'TrackOrderController@OrderUpdateFiveNumber'
 ]);
 
+Route::post('TrackOrderCreditCard',[
+	'as'=>'TrackOrderCreditCard',
+	'uses'=>'TrackOrderController@TrackOrderCreditCard'
+]);
+
 Route::get('cancelOrder/{orderID?}',[
 	'as'=>'cancelOrder',
 	'uses'=>'TrackOrderController@CancelOrder'
@@ -231,4 +234,9 @@ Route::get('getmsg',function(){
 Route::get('SingleOrder/{orderID}/{orderState}',[
 	'as'=>'SingleOrder',
 	'uses'=>'TrackOrderController@OrderControllerDetailed'
+]);
+
+Route::get('GetCreditCard',[
+	'as'=>"GetCreditCard",
+	'uses'=>'Member_commodityController@GetCreditCard'
 ]);

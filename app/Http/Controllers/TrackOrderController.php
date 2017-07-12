@@ -8,6 +8,9 @@ use App\Order\Order as OD;
 use App\Order\OrderDetailed as ODD;
 use App\Http\Requests\TrackOrderFiveRequest;
 use App\Login\Login as LG;
+
+use App\MemberCommodity\MemberCommodity as MC;
+use App\CreditCard\Transaction as CCT;
 use View;
 
 class TrackOrderController extends Controller
@@ -16,11 +19,15 @@ class TrackOrderController extends Controller
     private $od;
     private $lg;
     private $odd;
+    private $mc;
+    private $cct;
 
-    public function __construct(OD $od, ODD $odd,LG $lg){
+    public function __construct(OD $od, ODD $odd,LG $lg,MC $mc,CCT $cct){
     	$this->od = $od;
     	$this->odd = $odd;
         $this->lg = $lg;
+        $this->mc = $mc;
+        $this->cct = $cct;
     }
 
     public function OrderController(
@@ -92,6 +99,17 @@ class TrackOrderController extends Controller
         }finally{
             //return $result;
             return $this->OrderController('Unpaid',null,$result);
+        }
+    }
+
+    public function TrackOrderCreditCard(Request $Request){
+        $random_number = $Request->input('randomNum');
+        $OrderData = $this->mc->GetOrder($random_number);
+        
+        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+            return $this->cct->Transaction($random_number);
+        }else if($OrderData[0]['checkoutMethod']=='ATM'){
+            return $this->OrderController('Unpaid');
         }
     }
 
