@@ -19,12 +19,23 @@ class merchandise_order extends Model
     	$query->where('memberID', $member_id);
     }
 
+    public function scopeCheckONO(
+    	$query,
+    	$ONO
+	){
+    	$query->where('randomNum', $ONO);
+    }
+
     public function scopeFindRandomNumber($query,$random_number){
     	$query->where('randomNum',$random_number);
     }
 
     public function scopeCheckoutMethod($query){
     	$query->where('checkoutMethod','ATM');
+    }
+
+    public function scopeCheckoutMethodCreditCard($query){
+    	$query->where('checkoutMethod','CreditCard');
     }
 
     public function scopeNotGroupBy($query){
