@@ -10,26 +10,23 @@
 		<div class="form-group">
 			<!--data-->
 			<div class="form-group">
-			<label>data</label>
-			<input class="form-control" type="text" name="data" value="{{ $data }}">
+			<input class="form-control" type="hidden" name="data" value="{{ $data }}">
 			</div>
 			<!--MAC-->
 			<div class="form-group">
-			<label>mac</label>
-			<input class="form-control"  type="text" name="mac" value = "{{ $mac }}">
+			<input class="form-control"  type="hidden" name="mac" value = "{{ $mac }}">
 			</div>
 			<!--MAC-->
 			<div class="form-group">
-			<label>ksn</label>
-			<input class="form-control"  type="text" name="ksn" value = "{{ $ksn }}">
+			<input class="form-control"  type="hidden" name="ksn" value = "{{ $ksn }}">
 			</div>
-			<button type='submit'>送出</button>
+			{{-- <button type='submit'>送出</button> --}}
 		</div>
 	</form>
 
-	{{-- <script type="text/javascript">
+	 <script type="text/javascript">
 		$(document).ready(function() {
 			$('#POSTransaction_form').submit();
 		});
-	</script> --}}
+	</script> 
 @stop

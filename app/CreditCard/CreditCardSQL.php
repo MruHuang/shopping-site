@@ -62,4 +62,14 @@ class CreditCardSQL
         ->get();
         return $result->count();
     }
+
+    public function ChangeOrderONO(
+        $ONO,
+        $random_number
+    ){
+        odSQL::CheckoutMethodCreditCard()
+        ->CheckONO($ONO)
+        ->update(['randomNum'=>$random_number]);
+        return true;
+    }
 }
