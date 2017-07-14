@@ -77,4 +77,14 @@ class CreditCardSQL
         ->update(['orderState'=>'Unpaid']);
         return true;
     }
+
+    public function ChangeOrderONO(
+        $ONO,
+        $random_number
+    ){
+        odSQL::CheckoutMethodCreditCard()
+        ->CheckONO($ONO)
+        ->update(['randomNum'=>$random_number]);
+        return true;
+    }
 }

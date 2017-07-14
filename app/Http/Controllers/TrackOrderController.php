@@ -32,9 +32,8 @@ class TrackOrderController extends Controller
 
     public function OrderController(
         $state,
-        $order_detailed = null,
-        $message_text = null
-
+        $message_text = null,
+        $order_detailed = null
     ){
     	$AllInformation=$this->od->Order($state);
         //return $AllInformation;
@@ -50,7 +49,7 @@ class TrackOrderController extends Controller
     public function OrderControllerDetailed($orderID,$orderState){
     	$order_detailed = $this->odd->OrderDetailed($orderID);
         $order_detailed['order_data'] = $this->od->SingleOrder($orderID);
-        return $this->OrderController($orderState,$order_detailed);
+        return $this->OrderController($orderState,null,$order_detailed);
     }
 
     // public function OrderUpdateFiveNumber(
@@ -98,18 +97,19 @@ class TrackOrderController extends Controller
             //$result = $e;
         }finally{
             //return $result;
-            return $this->OrderController('Unpaid',null,$result);
+            return $this->OrderController('Unpaid',$result,null);
         }
     }
 
     public function TrackOrderCreditCard(Request $Request){
         $random_number = $Request->input('randomNum');
         $OrderData = $this->mc->GetOrder($random_number);
+        $message_text = null;
         
         if($OrderData[0]['checkoutMethod']=='CreditCard'){
-            return $this->cct->Transaction($random_number);
+            return $this->cct->checkOrder($random_number);
         }else if($OrderData[0]['checkoutMethod']=='ATM'){
-            return $this->OrderController('Unpaid');
+            return $this->OrderController('Unpaid',$message_text);
         }
     }
 

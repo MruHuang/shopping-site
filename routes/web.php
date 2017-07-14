@@ -72,11 +72,11 @@ Route::group(['prefix'=>'Login'],function(){
 //信用卡
 Route::group(['prefix'=>'CreditCard'],function(){
 	Route::post('BackData',[
-		'as'=>'CreditCard',
+		'as'=>'postCreditCard',
 		'uses'=>'CreditCardController@BackData'
 	]);
 	Route::get('BackData',[
-		'as'=>'CreditCard',
+		'as'=>'getCreditCard',
 		'uses'=>'CreditCardController@BackData'
 	]);
 	Route::get('OrderReverse/{TYP}/{ONO}',[
@@ -188,7 +188,7 @@ Route::get('TrackOrder',[
 		}
 ]);
 
-Route::get('TrackOrder/{state}',[
+Route::get('TrackOrder/{state}/{message_text?}',[
 	'as'=>'TrackOrder',
 	'uses'=>'TrackOrderController@OrderController'
 ]);
