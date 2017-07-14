@@ -140,8 +140,14 @@ class CreditCardController extends Controller
         }catch(\Exception $e){
             $result_message = $e;
         }finally{
-           // return $message;
-            return $this->mcc->Member_commodity('Car', $message);
+            // return $message;
+            if($message != '信用卡以交易成功'){
+                  //進行沖正交易
+                 return  $this->Reverse('05',$ONO);
+            }
+            else{
+                return $this->mcc->Member_commodity('Car', $message);
+            }
             // return redirect()->route('Member_commodityController@Member_commodity',['Car', $message]);
         }
     }
@@ -238,7 +244,7 @@ class CreditCardController extends Controller
         //檢查資料是否被串改
         if ($MACD != $mac){
             //資料錯誤
-            Log::info('信用卡-受權-資料比對錯誤-訂單編號:'.$ONO);
+            Log::info('信用卡-沖正交易-資料比對錯誤-訂單編號:'.$ONO);
             $message = '傳送訊息被串改';
         }
 
