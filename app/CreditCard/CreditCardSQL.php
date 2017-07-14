@@ -62,6 +62,21 @@ class CreditCardSQL
         ->get();
         return $result->count();
     }
+    //取消訂單
+    public function OrderUpdateToCancel($ONO){
+        odSQL::CheckoutMethodCreditCard()
+        ->CheckONO($ONO)
+        ->update(['orderState'=>'Cancel']);
+        return true;
+    }
+
+    //取消訂單
+    public function OrderUpdateToUnpaid($ONO){
+        odSQL::CheckoutMethodCreditCard()
+        ->CheckONO($ONO)
+        ->update(['orderState'=>'Unpaid']);
+        return true;
+    }
 
     public function ChangeOrderONO(
         $ONO,
