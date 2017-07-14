@@ -79,6 +79,14 @@ Route::group(['prefix'=>'CreditCard'],function(){
 		'as'=>'getCreditCard',
 		'uses'=>'CreditCardController@BackData'
 	]);
+	Route::get('OrderReverse/{TYP}/{ONO}',[
+		'as'=>'CreditCardReverse',
+		'uses'=>'CreditCardController@Reverse'
+	]);
+	Route::get('OrderCancel/{ONO}',[
+		'as'=>'CreditCardCancel',
+		'uses'=>'CreditCardController@CreditCardCancel'
+	]);
 });
 
 Route::post('Register',[
