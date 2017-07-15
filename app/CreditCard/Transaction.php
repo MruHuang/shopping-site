@@ -54,7 +54,7 @@ class Transaction
             $ksn = 1;
             $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
             $result =  $this->curl_post($checkONO_url,$postdata);
-            Log::info('checkOrder:'.$OrderData[0]['checkoutMethod'].'->'.$result);
+            Log::info('checkOrder:'.$OrderData[0]['orderID'].'->'.$result);
             // return $result;
             $data_replace = preg_split('/=/',$result);
             if(count($data_replace)==2){

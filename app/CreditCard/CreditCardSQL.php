@@ -93,7 +93,6 @@ class CreditCardSQL
     public function GetOrderID($ONO){
         $result = odSQL::CheckoutMethodCreditCard()
         ->CheckONO($ONO)
-        ->select('orderID')
         ->get();
         return $result;
     }
