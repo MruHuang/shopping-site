@@ -23,29 +23,29 @@ class CreditCardUserError
             $ONO
         );
         if($RC == '01'){
-            $resultMessage += '請查詢銀行';
+            $resultMessage = $resultMessage.'請查詢銀行';
         }else if($RC == '14'){
-            $resultMessage += '卡號錯誤';
+            $resultMessage = $resultMessage.'卡號錯誤';
         }else if($RC == '54'){
-            $resultMessage += '卡片過期';
+            $resultMessage = $resultMessage.'卡片過期';
         }else if($RC == '62'){
-            $resultMessage += '尚未開卡';
+            $resultMessage = $resultMessage.'尚未開卡';
         }else if($RC == 'L1'){
-            $resultMessage += '產品代碼錯誤';
+            $resultMessage = $resultMessage.'產品代碼錯誤';
         }else if($RC == 'L2'){
-            $resultMessage += '期數錯誤';
+            $resultMessage = $resultMessage.'期數錯誤';
         }else if($RC == 'L3'){
-            $resultMessage += '不支援分期(他行卡)';
+            $resultMessage = $resultMessage.'不支援分期(他行卡)';
         }else if($RC == 'L4'){
-            $resultMessage += '產品代碼過期';
+            $resultMessage = $resultMessage.'產品代碼過期';
         }else if($RC == 'L5'){
-            $resultMessage += '金額無效';
+            $resultMessage = $resultMessage.'金額無效';
         }else if($RC == 'L6'){
-            $resultMessage += '不支援分期';
+            $resultMessage = $resultMessage.'不支援分期';
         }else{
-            $resultMessage += '拒絕交易';
+            $resultMessage = $resultMessage.'拒絕交易';
         }
-        $resultMessage +=  $resultMessage.")";
+        $resultMessage = $resultMessage.")";
         //之前刷卡失敗 重新給randomNUm
         $random_number = strval(time()).str_random(5);
         $this->ccSQL->ChangeOrderONO($ONO,$random_number);
