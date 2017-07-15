@@ -56,9 +56,8 @@ class Transaction
 		$mac = hash('sha256', $data_json.$MAC_KEY);
 		$ksn = 1;
         $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
-        
         $result =  $this->curl_post($checkONO_url,$postdata);
-		// Log::info('checkOrder:'.$result);
+		Log::info('checkOrder:'.$result);
         // return $result;
 		$data_replace = preg_split('/=/',$result);
         if(count($data_replace)==2){

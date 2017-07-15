@@ -203,7 +203,7 @@ class CreditCardController extends Controller
         $MAC_KEY = env('MAC_KEY',null);
         
         //送出沖正請求
-        $cancel_url = env('CreadCardURL_Reverse',false);
+        $reverse_url = env('CreadCardURL_Reverse',false);
         $data = array(
             "TYP"=>$TYP,
             "ONO"=>$ONO,
@@ -213,44 +213,25 @@ class CreditCardController extends Controller
         $mac = hash('sha256', $data_json.$MAC_KEY);
         $ksn = 1;
         $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
-        $back_data = $this->cccl->PostDataToBank($cancel_url,$postdata);
-
+        $back_data = $this->cccl->PostDataToBank($reverse_url,$postdata);
+        return $back_data;
         //回傳交易處理
         $RC_Success = '00';
-        $data = $Request->input('DATA');
-        $MACD = $Request->input('MACD');
-        $data_replace = preg_split('/,/',$data);
-        $data_array = [];
-        foreach($data_replace as $keyvalue){
-            $keyvalue = preg_split('/=/',$keyvalue);
-            $key = $keyvalue[0];
-            $value = $keyvalue[1];
-            $data_array = array_add($data_array, $key, $value);
-        }
+        $data_replace = preg_split('/=/',$back_data);
+		$data_array = (array)json_decode($data_replace[1]);
 
-        $mac = hash('sha256', $data.','.$MAC_KEY);
-
-        //回覆碼
-        $RC = $data_array['RC'];
-        //特約店代號
-        $MID = $data_array['MID'];
-        //訂單編號
-        $ONO = $data_array['ONO'];
-        
-
-        //檢查資料是否被串改
-        if ($MACD != $mac){
-            //資料錯誤
-            Log::info('信用卡-沖正交易-資料比對錯誤-訂單編號:'.$ONO);
-            $message = '傳送訊息被串改';
-        }
+        $returnCode = $data_array['returnCode'];
+        $txnData = (array)$data_array['txnData'];
+        $RC = $txnData['RC'];
+        $MID = $txnData['MID'];
+        $ONO = $txnData['ONO'];
 
         //交易成功
         if($RC_Success == $RC){
             //收單交易日期
-            $LTD = $data_array['LTD'];
+            $LTD = $txnData['LTD'];
             //收單交易時間
-            $LTT = $data_array['LTT'];
+            $LTT = $txnData['LTT'];
             //GO TO Finish(TransactionComplete)
             $message = $this->ccr->Reverse(
                 $TYP,
