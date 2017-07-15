@@ -221,7 +221,7 @@ class CreditCardController extends Controller
         $ksn = 1;
         $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
         $back_data = $this->cccl->PostDataToBank($reverse_url,$postdata);
-        return $back_data;
+        // return $back_data;
         //回傳交易處理
         $RC_Success = '00';
         $data_replace = preg_split('/=/',$back_data);
