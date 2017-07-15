@@ -24,19 +24,21 @@ class CreditCardSystemError
         $resultMessage = '系統錯誤(';
         
         if($RC == 'G6')
-            $resultMessage+="訂單編號重複";
+            $resultMessage= $resultMessage."訂單編號重複";
         else if($RC == 'G0')
-             $resultMessage+="系統功能有誤";
+             $resultMessage= $resultMessage."系統功能有誤";
         else if($RC == 'G1')
-             $resultMessage+="交易逾時";
+             $resultMessage= $resultMessage."交易逾時";
         else if($RC == 'G2')
-             $resultMessage+="資料格式錯誤";
+             $resultMessage= $resultMessage."資料格式錯誤";
         else if($RC == 'G5')
-             $resultMessage+="非使用中特定店";
+             $resultMessage= $resultMessage."非使用中特定店";
         else if($RC == 'G9')
-             $resultMessage+="Session檢查有誤";
+             $resultMessage= $resultMessage."Session檢查有誤";
         $random_number = strval(time()).str_random(5);
         $this->ccSQL->ChangeOrderONO($ONO,$random_number);
-        return $resultMessage.')';
+        
+        $resultMessage = $resultMessage.")";
+        return $resultMessage;
     }
 }
