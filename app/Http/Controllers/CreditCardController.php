@@ -83,20 +83,21 @@ class CreditCardController extends Controller
                 '14','54','62','X8','L1','L2','L3','L4','L5','L6'];
             $RC_Error_System = ['G0','G1','G2','G5','G6','G9'];
 
-            $Order_ID = $this->ccSQL->GetOrderID($ONO);
+            $OrderData = $this->ccSQL->GetOrderID($ONO);
+            // Log::info($OrderData[0]['orderID']);
             //檢查資料是否被串改
             if ($MACD != $mac){
                 //資料錯誤
-                Log::info('信用卡-受權-資料比對錯誤-訂單編號:'.$ONO.'('.$Order_ID.')');
+                Log::info('信用卡-受權-資料比對錯誤-訂單編號:'.$ONO.'('.$OrderData[0]['orderID'].')');
                 $message = '傳送訊息被串改';
             }
             //檢查是否為使用者錯誤
             foreach($RC_Error_User as $errorCode){
                 if($errorCode == $RC){
                     //GO TO ShowToUser(userError)
-                    Log::info('信用卡-受權-使用者錯誤-訂單編號:'.$ONO.'('.$Order_ID.')');
+                    Log::info('信用卡-受權-使用者錯誤-訂單編號:'.$ONO.'('.$OrderData[0]['orderID'].')');
                     $message = $this->ccue->UserErrorData(
-                        $Order_ID,
+                        $OrderData[0]['orderID'],
                         $RC,
                         $MID,
                         $ONO
@@ -107,9 +108,9 @@ class CreditCardController extends Controller
             foreach($RC_Error_System as $errorCode){
                 if($errorCode == $RC){
                     //GO TO SystemErrorCheck(SystemErrorCheck)
-                    Log::info('信用卡-受權-系統錯誤-訂單編號:'.$ONO.'('.$Order_ID.')');
+                    Log::info('信用卡-受權-系統錯誤-訂單編號:'.$ONO.'('.$OrderData[0]['orderID'].')');
                     $message = $this->ccse->SystemErrorData(
-                        $Order_ID,
+                        $OrderData[0]['orderID'],
                         $RC,
                         $MID,
                         $ONO
@@ -132,7 +133,7 @@ class CreditCardController extends Controller
                 $AN = $data_array['AN'];
                 //GO TO Finish(TransactionComplete)
                 $message = $this->cctc->TransactionComplete(
-                    $Order_ID,
+                    $OrderData[0]['orderID'],
                     $RC,
                     $MID,
                     $ONO,
@@ -155,8 +156,8 @@ class CreditCardController extends Controller
 
     //取消訂單
     public function CreditCardCancel($ONO){
-        $Order_ID = $this->ccSQL->GetOrderID($ONO);
-        Log::info('信用卡-取消交易-訂單編號:'.$ONO.'('.$Order_ID.')');
+        $OrderData = $this->ccSQL->GetOrderID($ONO);
+        Log::info('信用卡-取消交易-訂單編號:'.$ONO.'('.$OrderData[0]['orderID'].')');
 
         $MID = env('MID', null);
         $MAC_KEY = env('MAC_KEY',null);
@@ -174,7 +175,7 @@ class CreditCardController extends Controller
 
         //送出交易後處理
         $back_data = $this->cccl->PostDataToBank($cancel_url,$postdata);
-        Log::info('信用卡-取消交易-訂單編號:'.$ONO.'('.$Order_ID.')'."回傳資料".$back_data);
+        Log::info('信用卡-取消交易-訂單編號:'.$ONO.'('.$OrderData[0]['orderID'].')'."回傳資料".$back_data);
         $data_replace = preg_split('/=/',$back_data);
 		$data_array = (array)json_decode($data_replace[1]);
 
@@ -202,7 +203,7 @@ class CreditCardController extends Controller
         $TYP,
         $ONO
     ){
-        $Order_ID = $this->ccSQL->GetOrderID($ONO);
+        $OrderData = $this->ccSQL->GetOrderID($ONO);
         Log::info('沖正交易-訂單編號:'.$ONO.'沖正交易類別'.$TYP); 
 
         $MID = env('MID', null);
