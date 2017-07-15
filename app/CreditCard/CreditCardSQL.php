@@ -15,6 +15,7 @@ class CreditCardSQL
 {
     //儲存信用卡資訊
     public function CreditCardDataInsert(
+        $orderID,
         $RC,
         $MID,
         $ONO,
@@ -31,6 +32,7 @@ class CreditCardSQL
         $BRA = null
     ){
     	$inset_data = new ccSQL();
+        $inset_data->orderID = $orderID;
         $inset_data->RC = $RC;
         $inset_data->MID = $MID;
         $inset_data->ONO = $ONO;
@@ -77,7 +79,7 @@ class CreditCardSQL
         ->update(['orderState'=>'Unpaid']);
         return true;
     }
-
+    //檢查該訂單是否存在
     public function ChangeOrderONO(
         $ONO,
         $random_number
@@ -86,5 +88,13 @@ class CreditCardSQL
         ->CheckONO($ONO)
         ->update(['randomNum'=>$random_number]);
         return true;
+    }
+    //取得ORDERID
+    public function GetOrderID($ONO){
+        $result = odSQL::CheckoutMethodCreditCard()
+        ->CheckONO($ONO)
+        ->select('orderID')
+        ->get();
+        return $result;
     }
 }

@@ -12,12 +12,14 @@ class CreditCardUserError
     }
 
     public function UserErrorData(
+        $orderID,
         $RC,
         $MID,
         $ONO
     ){
         $resultMessage = '信用卡交易失敗(';
     	$this->ccSQL->CreditCardDataInsert(
+            $orderID,
             $RC,
             $MID,
             $ONO
