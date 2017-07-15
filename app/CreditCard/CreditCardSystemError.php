@@ -40,7 +40,7 @@ class CreditCardSystemError
         $random_number = strval(time()).str_random(5);
         $this->ccSQL->ChangeOrderONO($ONO,$random_number);
         
-        $resultMessage = $resultMessage.")";
+        $resultMessage = $resultMessage.")，請再次點選'前往刷卡結帳'";
         return $resultMessage;
     }
 }

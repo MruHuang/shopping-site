@@ -15,15 +15,13 @@ class Transaction
         $this->ccs = $ccs;
     }
 
-    public function Transaction($random_number){
-        $OrderData = $this->mc->GetOrder($random_number);
-        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+    public function Transaction($random_number,$totalPrice){
             $url = env('CreadCardURL', false);
             $ONO = $random_number;
             $MID = env('MID', null);
             $MAC_KEY = env('MAC_KEY',null);
             $U = route('getCreditCard');
-            $TA = $OrderData[0]['totalPrice'];
+            $TA = $totalPrice;
             $TID = env('TID', null);
             $data = array(
                 "ONO"=>$ONO,
@@ -37,51 +35,53 @@ class Transaction
             $ksn = 1;
             $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn,'url'=>$url);
             return View::make('POSTCreditCard',$postdata);
-        }else{
-            return  redirect()->route('TrackOrder',['state'=>'Unpaid']);
-        }
     }
 
     public function checkOrder($random_number){
-        $ONO = $random_number;
-        $message_text = null;
-        $MID = env('MID', null);
-        $MAC_KEY = env('MAC_KEY',null);
-        $checkONO_url = env('InquireOrderURL', false);
-        $data = array(
-            "MID"=>$MID,
-            "ONO"=>$ONO,
-        );
-        $data_json = json_encode($data);
-		$mac = hash('sha256', $data_json.$MAC_KEY);
-		$ksn = 1;
-        $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
-        $result =  $this->curl_post($checkONO_url,$postdata);
-		Log::info('checkOrder:'.$result);
-        // return $result;
-		$data_replace = preg_split('/=/',$result);
-        if(count($data_replace)==2){
-            $data_array = (array)json_decode($data_replace[1]);
-            if($data_array['returnCode'] =="00"){
-                if($data_array['txnData']->RC=="00"){
-                    $this->ccs->OrderUpdateToReady($ONO);
-                    $message_text = "已結帳完畢";
-                    return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
-                }else if($data_array['txnData']->RC=="GD"){
-                    return $this->Transaction($ONO);
+        $OrderData = $this->mc->GetOrder($random_number);
+        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+            $ONO = $random_number;
+            $message_text = null;
+            $MID = env('MID', null);
+            $MAC_KEY = env('MAC_KEY',null);
+            $checkONO_url = env('InquireOrderURL', false);
+            $data = array(
+                "MID"=>$MID,
+                "ONO"=>$ONO,
+            );
+            $data_json = json_encode($data);
+            $mac = hash('sha256', $data_json.$MAC_KEY);
+            $ksn = 1;
+            $postdata = array('data'=>$data_json,'mac'=>$mac,'ksn'=>$ksn);
+            $result =  $this->curl_post($checkONO_url,$postdata);
+            Log::info('checkOrder:'.$OrderData[0]['checkoutMethod'].'->'.$result);
+            // return $result;
+            $data_replace = preg_split('/=/',$result);
+            if(count($data_replace)==2){
+                $data_array = (array)json_decode($data_replace[1]);
+                if($data_array['returnCode'] =="00"){
+                    if($data_array['txnData']->RC=="00"){
+                        $this->ccs->OrderUpdateToReady($ONO);
+                        $message_text = "已結帳完畢";
+                        return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
+                    }else if($data_array['txnData']->RC=="GD"){
+                        return $this->Transaction($ONO,$OrderData[0]['totalPrice']);
+                    }else{
+                        //之前刷卡失敗 重新給randomNUm
+                        $random_number = strval(time()).str_random(5);
+                        $this->ccs->ChangeOrderONO($ONO,$random_number);
+                        return $this->checkOrder($random_number);
+                    }
                 }else{
-                    //之前刷卡失敗 重新給randomNUm
-                    $random_number = strval(time()).str_random(5);
-                    $this->ccs->ChangeOrderONO($ONO,$random_number);
-                    return $this->checkOrder($random_number);
+                    $message_text = "維修中，請聯絡管理員";
+                    return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
                 }
             }else{
                 $message_text = "維修中，請聯絡管理員";
                 return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
             }
         }else{
-            return $message_text = "維修中，請聯絡管理員";
-            return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
+            return  redirect()->route('TrackOrder',['state'=>'Unpaid']);
         }
     }
 

@@ -47,7 +47,7 @@ class CreditCardUserError
         }else{
             $resultMessage = $resultMessage.'拒絕交易';
         }
-        $resultMessage = $resultMessage.")";
+        $resultMessage = $resultMessage.")，請再次點選'前往刷卡結帳'";
         //之前刷卡失敗 重新給randomNUm
         $random_number = strval(time()).str_random(5);
         $this->ccSQL->ChangeOrderONO($ONO,$random_number);
