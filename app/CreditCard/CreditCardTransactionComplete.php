@@ -11,6 +11,7 @@ class CreditCardTransactionComplete
     }
 
     public function TransactionComplete(
+        $orderID,
         $RC,
         $MID,
         $ONO,
@@ -23,6 +24,7 @@ class CreditCardTransactionComplete
         $resultMessage = '信用卡已交易成功，訂單發生例外情況請聯絡相關人員';
         //新增資料
         $this->ccSQL->CreditCardDataInsert(
+            $orderID,
             $RC,
             $MID,
             $ONO,
