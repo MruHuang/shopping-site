@@ -12,13 +12,14 @@ use App\CreditCard\CreditCardCancel as CCCL;
 use App\CreditCard\Reverse as CCR;
 use App\CreditCard\CreditCardSQL as CCSQL;
 use App\Http\Controllers\Member_commodityController as MCC;
+use App\Http\Controllers\TrackOrderController as TOC;
 
 class CreditCardController extends Controller
 {
     //
-    private $cctc, $ccse, $ccue, $cccl, $ccSQL, $mcc, $ccr;
+    private $cctc, $ccse, $ccue, $cccl, $ccSQL, $mcc, $ccr, $toc;
     public $data_json = null;
-    public function __construct(CCTC $cctc, CCSE $ccse, CCUE $ccue, CCCL $cccl, CCSQL $ccSQL, MCC $mcc,CCR $ccr){
+    public function __construct(CCTC $cctc, CCSE $ccse, CCUE $ccue, CCCL $cccl, CCSQL $ccSQL, MCC $mcc,CCR $ccr, TOC $toc){
         $this->cctc = $cctc;
         $this->ccse = $ccse;
         $this->ccue = $ccue;
@@ -26,6 +27,7 @@ class CreditCardController extends Controller
         $this->ccr = $ccr;
         $this->ccSQL = $ccSQL;
         $this->mcc = $mcc;
+        $this->toc = $toc;
     }
     /*
     DATA=RC=00,MID=8089021965,ONO=C1001,LTD=20170710,LTT=225436,RRN=017191000033,AIR=882825,AN=552199******1856
@@ -57,16 +59,7 @@ class CreditCardController extends Controller
             $MID = $data_array['MID'];
             //訂單編號
             $ONO = $data_array['ONO'];
-            //收單交易日期
-            $LTD = $data_array['LTD'];
-            //收單交易時間
-            $LTT = $data_array['LTT'];
-            //簽帳單序號
-            $RRN = $data_array['RRN'];
-            //受權碼
-            $AIR = $data_array['AIR'];
-            //卡號
-            $AN = $data_array['AN'];
+            
             //分期付款資料欄位(若有值才會回傳)
             //分期總金額
             // $ITA = $data_json['ITA'];
@@ -124,6 +117,16 @@ class CreditCardController extends Controller
 
             //交易成功
             if($RC_Success == $RC){
+                //收單交易日期
+                $LTD = $data_array['LTD'];
+                //收單交易時間
+                $LTT = $data_array['LTT'];
+                //簽帳單序號
+                $RRN = $data_array['RRN'];
+                //受權碼
+                $AIR = $data_array['AIR'];
+                //卡號
+                $AN = $data_array['AN'];
                 //GO TO Finish(TransactionComplete)
                 $message = $this->cctc->TransactionComplete(
                     $RC,
@@ -141,13 +144,7 @@ class CreditCardController extends Controller
             $result_message = $e;
         }finally{
             // return $message;
-            if($message != '信用卡以交易成功'){
-                  //進行沖正交易
-                 return  $this->Reverse('05',$ONO);
-            }
-            else{
-                return $this->mcc->Member_commodity('Car', $message);
-            }
+            return  $this->toc->OrderController('Unpaid',$message);
             // return redirect()->route('Member_commodityController@Member_commodity',['Car', $message]);
         }
     }

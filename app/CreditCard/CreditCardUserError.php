@@ -16,7 +16,7 @@ class CreditCardUserError
         $MID,
         $ONO
     ){
-        $resultMessage = '信用卡交易失敗，請洽詢銀行(';
+        $resultMessage = '信用卡交易失敗(';
     	$this->ccSQL->CreditCardDataInsert(
             $RC,
             $MID,
@@ -46,6 +46,9 @@ class CreditCardUserError
             $resultMessage += '拒絕交易';
         }
         $resultMessage +=  $resultMessage.")";
+        //之前刷卡失敗 重新給randomNUm
+        $random_number = strval(time()).str_random(5);
+        $this->ccSQL->ChangeOrderONO($ONO,$random_number);
         return $resultMessage;
     }
 }
