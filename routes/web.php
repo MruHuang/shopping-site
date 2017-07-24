@@ -12,9 +12,7 @@
 */
 Route::get('test',[
 	'as'=>"test",
-	'uses'=>function () {
-	   return View::make('partials.Loading');
-	}
+	'uses'=>'Member_commodityController@test'
 ]);
 
 Route::get('/', function () {
@@ -69,6 +67,25 @@ Route::group(['prefix'=>'Login'],function(){
 	Route::get('LogOut',[
 		'as'=>'LogOut',
 		'uses'=>'LoginController@LogOut'
+	]);
+});
+//信用卡
+Route::group(['prefix'=>'CreditCard'],function(){
+	Route::post('BackData',[
+		'as'=>'postCreditCard',
+		'uses'=>'CreditCardController@BackData'
+	]);
+	Route::get('BackData',[
+		'as'=>'getCreditCard',
+		'uses'=>'CreditCardController@BackData'
+	]);
+	Route::get('OrderReverse/{TYP}/{ONO}',[
+		'as'=>'CreditCardReverse',
+		'uses'=>'CreditCardController@Reverse'
+	]);
+	Route::get('OrderCancel/{ONO}',[
+		'as'=>'CreditCardCancel',
+		'uses'=>'CreditCardController@CreditCardCancel'
 	]);
 });
 
@@ -132,6 +149,11 @@ Route::get('ShoppingCar/{speciestype}',[
 	'uses'=>'Member_commodityController@Member_commodity'
 ]);
 
+Route::post('Checkout',[
+	'as'=>'Checkout',
+	'uses'=>'Member_commodityController@Checkout'
+]);
+
 Route::post('OrderShoppingCar',[
 	'as'=>'OrderShoppingCar',
 	'uses'=>'Member_commodityController@OrderShoppingCar'
@@ -166,7 +188,7 @@ Route::get('TrackOrder',[
 		}
 ]);
 
-Route::get('TrackOrder/{state}',[
+Route::get('TrackOrder/{state}/{message_text?}',[
 	'as'=>'TrackOrder',
 	'uses'=>'TrackOrderController@OrderController'
 ]);
@@ -179,6 +201,11 @@ Route::get('TrackOrder/{state}',[
 Route::post('TrackOrderFive',[
 	'as'=>'TrackOrderFive',
 	'uses'=>'TrackOrderController@OrderUpdateFiveNumber'
+]);
+
+Route::post('TrackOrderCreditCard',[
+	'as'=>'TrackOrderCreditCard',
+	'uses'=>'TrackOrderController@TrackOrderCreditCard'
 ]);
 
 Route::get('cancelOrder/{orderID?}',[
@@ -226,4 +253,9 @@ Route::get('getmsg',function(){
 Route::get('SingleOrder/{orderID}/{orderState}',[
 	'as'=>'SingleOrder',
 	'uses'=>'TrackOrderController@OrderControllerDetailed'
+]);
+
+Route::get('GetCreditCard',[
+	'as'=>"GetCreditCard",
+	'uses'=>'Member_commodityController@GetCreditCard'
 ]);

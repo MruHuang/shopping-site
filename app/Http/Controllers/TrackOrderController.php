@@ -8,6 +8,9 @@ use App\Order\Order as OD;
 use App\Order\OrderDetailed as ODD;
 use App\Http\Requests\TrackOrderFiveRequest;
 use App\Login\Login as LG;
+
+use App\MemberCommodity\MemberCommodity as MC;
+use App\CreditCard\Transaction as CCT;
 use View;
 
 class TrackOrderController extends Controller
@@ -16,18 +19,21 @@ class TrackOrderController extends Controller
     private $od;
     private $lg;
     private $odd;
+    private $mc;
+    private $cct;
 
-    public function __construct(OD $od, ODD $odd,LG $lg){
+    public function __construct(OD $od, ODD $odd,LG $lg,MC $mc,CCT $cct){
     	$this->od = $od;
     	$this->odd = $odd;
         $this->lg = $lg;
+        $this->mc = $mc;
+        $this->cct = $cct;
     }
 
     public function OrderController(
         $state,
-        $order_detailed = null,
-        $message_text = null
-
+        $message_text = null,
+        $order_detailed = null
     ){
     	$AllInformation=$this->od->Order($state);
         //return $AllInformation;
@@ -43,7 +49,7 @@ class TrackOrderController extends Controller
     public function OrderControllerDetailed($orderID,$orderState){
     	$order_detailed = $this->odd->OrderDetailed($orderID);
         $order_detailed['order_data'] = $this->od->SingleOrder($orderID);
-        return $this->OrderController($orderState,$order_detailed);
+        return $this->OrderController($orderState,null,$order_detailed);
     }
 
     // public function OrderUpdateFiveNumber(
@@ -93,7 +99,19 @@ class TrackOrderController extends Controller
             //$result = $e;
         }finally{
             //return $result;
-            return $this->OrderController('Unpaid',null,$result);
+            return $this->OrderController('Unpaid',$result,null);
+        }
+    }
+
+    public function TrackOrderCreditCard(Request $Request){
+        $random_number = $Request->input('randomNum');
+        $OrderData = $this->mc->GetOrder($random_number);
+        $message_text = null;
+        
+        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+            return $this->cct->checkOrder($random_number);
+        }else if($OrderData[0]['checkoutMethod']=='ATM'){
+            return $this->OrderController('Unpaid',$message_text);
         }
     }
 

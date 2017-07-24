@@ -23,7 +23,7 @@ class ProductInformation
         $result = odSQL::
         CheckID($memberID)
         ->GetUnpaid()
-        ->CheckoutMethod()
+        // ->CheckoutMethod()
         ->get();
         return $result;
     }
