@@ -73,7 +73,9 @@ class TrackOrderController extends Controller
     public function CancelOrder($orderID){
         $result = null;
         try {
+            //還紅利點數
             $this->od->AddIntegral($orderID);
+            //增加取消訂單次數
             $this->od->AddCancel();
             // $this->odd->OrderDetailDel($orderID);
             // $this->od->OrderDel($orderID);
