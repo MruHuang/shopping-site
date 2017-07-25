@@ -97,6 +97,7 @@
                     <label>結帳方式</label>
                     <select class="form-control" name="checkoutMethod">
                         <option>ATM</option>
+                        <option>CreditCard</option>
                         {{-- <option>貨到付款</option> --}}
                     </select>
                     <div class='alert alert-info' style='margin-left: 20px;'>

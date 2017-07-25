@@ -226,8 +226,10 @@ class Member_commodityController extends Controller
         try{
             foreach ($json_data as $key => $value) {
                 array_push($josn_array, (array)$json_data[$key]);
+                $random_number = strval(time()).str_random(5);
                 //return $josn_array;
                 $result =$this->mc->InsertToOrder(array(
+                    'random_number'=>$random_number,
                     'jsondata'=>$josn_array,
                     'memberID'=>$user_data,
                     'recipient'=>$recipient,
