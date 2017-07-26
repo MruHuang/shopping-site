@@ -8,8 +8,10 @@ use App\MemberCommodity\MemberCommodity as MC;
 use App\MemberCommodity\MemberCommodityCount as MCC;
 use App\Login\Login as LG;
 use App\Model\Member_commodity as mcSQL;
+use App\CreditCard\Transaction as CCT;
 use View;
 use DB;
+use Log;
 
 class Member_commodityController extends Controller
 {
@@ -17,10 +19,12 @@ class Member_commodityController extends Controller
     private $lg;
     private $mc;
     private $mcc;
-    public function __construct(LG $lg,MC $mc, MCC $mcc){
+    private $cct;
+    public function __construct(LG $lg,MC $mc, MCC $mcc,CCT $cct){
         $this->lg = $lg;
         $this->mc = $mc;
         $this->mcc = $mcc;
+        $this->cct = $cct;
     }
 
     public function Member_commodity($speciestype = null,$message_text = null
@@ -113,9 +117,27 @@ class Member_commodityController extends Controller
         );
         return $result;
     }
+   
+    public function Checkout(Request $Request){
+    	//return $Request->all();
+        $random_number = $Request->input('randomNum');
+        $message_text=null;
+        $OrderData = $this->mc->GetOrder($random_number);
+        if($OrderData[0]['checkoutMethod']=='CreditCard'){
+            return $this->cct->checkOrder($random_number);
+        }else if($OrderData[0]['checkoutMethod']=='ATM') {
+            $message_text = 'ATM付完款後，請輸入匯款後五碼';
+            return  redirect()->route('TrackOrder',['state'=>'Unpaid','message_text'=>$message_text]);
+        }
+    }
+
+    public function GetCreditCard(Request $Request){
+    	return $Request->all();
+
+    }
 
     public function OrderShoppingCar(Request $Request){
-    	//return $Request->all();
+        //return $Request->all();
         $result_message = "請購買商品";
         if(!$this->lg->LoginSessionCheck()){
             return View::make('Login',[
@@ -124,11 +146,13 @@ class Member_commodityController extends Controller
             ]);
         }
         $user_data = $this->lg->LoginSessionID();
-     
+        $random_number = strval(time()).str_random(5);
+        $checkoutMethod = $Request->checkoutMethod;
         try{
             $result_message = DB::transaction(function() use(
                 $Request,
                 $user_data,
+                $random_number,
                 $result_message
             ){
                 $jsondata = $Request->jsondata;
@@ -143,6 +167,7 @@ class Member_commodityController extends Controller
                 }
 
                 $result = $this->mc->InsertToOrder(array(
+                    'random_number'=>$random_number,
                     'jsondata'=>$josn_array,
                     'memberID'=>$user_data,
                     'recipient'=>$recipient,
@@ -162,18 +187,21 @@ class Member_commodityController extends Controller
 
 	            return $result_message;
             });
-            
-
-            
-            //$result_message = '123';
+            if($result_message =='訂購完成'){
+                $OrderData = $this->mc->GetOrder($random_number);
+                $OrderDetailed = $this->mc->GetOrderDetailed($OrderData[0]['orderID']);
+                if($checkoutMethod == 'ATM'){
+                    $message_text= '下單已完成，請前往ATM結帳';
+                }else if($checkoutMethod == 'CreditCard'){
+                    $message_text= '下單已完成，請點選下方結帳鈕進行線上刷卡結帳';
+                }
+                $data = array('OrderData'=>$OrderData,'OrderDetailed'=>$OrderDetailed,'message_text'=>$message_text);
+                return View::make('Checkout',$data);
+            }else{
+                return $this->Member_commodity('Car',$result_message);
+            }
         }catch (\Exception $e){
-            // return View::make('Login',[
-            //     'message_text'=>$e
-            // ]);
             $result_message = $e;
-        }
-        finally{
-            //return $result_message;
             return $this->Member_commodity('Car',$result_message);
         }
     }
@@ -198,8 +226,10 @@ class Member_commodityController extends Controller
         try{
             foreach ($json_data as $key => $value) {
                 array_push($josn_array, (array)$json_data[$key]);
+                $random_number = strval(time()).str_random(5);
                 //return $josn_array;
                 $result =$this->mc->InsertToOrder(array(
+                    'random_number'=>$random_number,
                     'jsondata'=>$josn_array,
                     'memberID'=>$user_data,
                     'recipient'=>$recipient,

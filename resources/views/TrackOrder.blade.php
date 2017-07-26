@@ -65,7 +65,17 @@
                         <td>
                         @if($All['AllInformation'][$i]['is_ordered'])
                             @if($All['AllInformation'][$i]['orderState'] == 'Unpaid')
-                                @include('partials.order.orderUnpaid')
+                                @if($All['AllInformation'][$i]['checkoutMethod'] == 'ATM')
+                                    如已完成付款，
+                                    輸入匯款後五碼並按確認。
+                                    <a class="btn btn-success orderFN_btn" date-orderID="{{ $All['AllInformation'][$i]['orderID'] }}" date-orderState="{{ $All['AllInformation'][$i]['orderState'] }}">輸入匯款碼</a>
+                                @else
+                                    <form role="form"  method="POST" action="{{ route('TrackOrderCreditCard') }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="randomNum" value="{{ $All['AllInformation'][$i]['randomNum'] }}">
+                                        <button type="submit" class="btn btn-danger">前往刷卡結帳</a>
+                                    </form>
+                                @endif
                             @elseif($All['AllInformation'][$i]['orderState'] == 'Check')
                                 {{--@include('partials.order.orderReady')--}}
                                 待確認付款
