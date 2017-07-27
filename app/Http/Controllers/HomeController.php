@@ -10,8 +10,8 @@ class HomeController extends Controller
 {
     public function Home(HM $hm){
     	$AllInformation = $hm->Home();
+		$LatestNews= $hm->LatestNews();
     	$AllInformation = array_filter($AllInformation);
-    	//return $AllInformation;
-    	return view::make('Home',['AllInformation'=>$AllInformation]);
+    	return view::make('Home',['AllInformation'=>$AllInformation,'LatestNews'=>$LatestNews]);
 	}
 }
