@@ -5,6 +5,7 @@ namespace App\Home;
 use App\Model\commodity as cmSQL;
 use App\Model\groupbuy_commodity as gcSQL;
 use App\Model\limited_commodity as lcSQL;
+use App\Model\promotion as ptSQL;
 
 
 class ProductInformation
@@ -72,5 +73,10 @@ class ProductInformation
     		);
     	},$result);
     }
+
+	public function GetLatestNews(){
+		$result = ptSQL::get();
+		return $result;
+	}
 
 }

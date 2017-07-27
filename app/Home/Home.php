@@ -4,6 +4,7 @@ namespace App\Home;
 
 use App\Home\ProductInformation as PI;
 
+
 class Home
 {
     private $pi;
@@ -32,12 +33,20 @@ class Home
     		0,
     		$ProductNumber["timelimit"]
     	);
+		
     	$AllInformation = array(
     		"commodity"=>$GeneralInformation,
     		"groupbuy"=>$GroupBuyInformation,
-    		"timelimit"=>$TimeLimitInformation
+    		"timelimit"=>$TimeLimitInformation,
+			
     	);
     	return $AllInformation;
     }
+
+	public function LatestNews(){
+		$Promotion = $this->pi->GetLatestNews();
+		$result = $Promotion[0]['latest_news'];
+		return $result;
+	}
 
 }
