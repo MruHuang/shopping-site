@@ -17,7 +17,7 @@
 			            'array_key'=>$array_key,
 			            'start'=>'1',
 			            'end'=>'12',
-			            'type'=>'1',
+			            'type'=>'All',
 			            'order_type'=>'AddTime',
 			            'this_page'=>'1'
 			            ]) }} " class="home_more_style" style="color: red; float: right;font-size: 20px;">more...</a>
@@ -45,7 +45,7 @@
 			'array_key'=>$array_key,
 			'start'=>'1',
 			'end'=>'12',
-			'type'=>'1',
+			'type'=>'All',
 			'order_type'=>'AddTime',
 			'this_page'=>'1'
 			]) }} " class="home_more_style">more...</a></div>
