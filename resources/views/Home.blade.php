@@ -7,12 +7,14 @@
 @show
 
 @section('content')
-	 <div class='panel panel-success' style='margin:15px;'>
+	@if($LatestNews!=null)
+	<div class='panel panel-success' style='margin:15px;'>
 		<div class='panel-heading'><h4>最新消息</h3></div>
 		<div class='panel-body' style='overflow-y:auto; height: 150px;'>
-			{{ $LatestNews }}
+			{!! $LatestNews !!}
 		</div>
 	</div> 
+	@endif
 	@include('partials.commodity_area_3')
 	<div class='alert alert-info col-xs-12'>
 		ATM匯款方式<br/>銀行代號：808<br/>存戶帳號：0129-940-053850<br/>玉山銀行雙和分行 <br/>

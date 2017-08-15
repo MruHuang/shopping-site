@@ -22,6 +22,8 @@ class SingleCommodityController extends Controller
 	
     public function SingleCommodity($type='commodity', $ID='9', $message_text = null){
     	$AllInformation = $this->sc->Commodity($type, $ID);
+        $commodityIntroduction = $AllInformation[0]['commodityIntroduction'];
+        $AllInformation[0]['commodityIntroduction'] = str_replace(chr(13).chr(10), "<br />",$commodityIntroduction);
     	//$AllInformation = array_filter($AllInformation);
         //return $AllInformation; 
     	return view::make('Commoditypage',['AllInformation'=>$AllInformation[0],'type'=>$type,'message_text'=>$message_text]);
