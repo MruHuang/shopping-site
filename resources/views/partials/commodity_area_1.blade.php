@@ -16,7 +16,7 @@
                     'start'=>'1',
                     'end'=>'12',
                     'type'=>'All',
-                    'order_type'=>'AddTime',
+                    'order_type'=>'created_at',
                     'this_page'=>'1'
                     ]) }} " class="home_more_style" style="color: red; float: right;font-size: 20px;">more..</a>
                 </div>
@@ -46,7 +46,7 @@
             'start'=>'1',
             'end'=>'12',
             'type'=>'All',
-            'order_type'=>'AddTime',
+            'order_type'=>'created_at',
             'this_page'=>'1'
             ]) }} " class="home_more_style">more...</a>
     </div>
