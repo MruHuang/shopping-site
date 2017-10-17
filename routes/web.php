@@ -43,17 +43,6 @@ Route::group(['prefix'=>'Login'],function(){
 		}
 	]);
 
-	Route::get('/{isRegistered?}/{message_text?}',[
-		'as'=>'Login', 
-		'uses'=>function ($isRegistered = null,$message_text=null) {
-    	return View::make('Login',[
-    			'isRegistered'=>$isRegistered,
-				'message_text'=>$message_text
-				
-		]);
-	}]);
-			
-	
 	Route::post('Login',[
 		'as'=>'LoginPost',
 		'uses'=>'LoginController@LoginCheck'
@@ -68,6 +57,19 @@ Route::group(['prefix'=>'Login'],function(){
 		'as'=>'LogOut',
 		'uses'=>'LoginController@LogOut'
 	]);
+
+	Route::get('/{isRegistered?}/{message_text?}',[
+		'as'=>'Login', 
+		'uses'=>function ($isRegistered = null,$message_text=null) {
+    	return View::make('Login',[
+    			'isRegistered'=>$isRegistered,
+				'message_text'=>$message_text
+				
+		]);
+	}]);
+			
+	
+	
 });
 //信用卡
 Route::group(['prefix'=>'CreditCard'],function(){

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\Member as memberSQL;
 use App\Login\Login as Login;
 use View;
+use Log;
 
 class LoginController extends Controller
 {

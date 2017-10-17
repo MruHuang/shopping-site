@@ -6,6 +6,7 @@ use App\Model\Member as memberSQL;
 use Session;
 use View;
 use Hash;
+use Log;
 class Login
 {
     //
