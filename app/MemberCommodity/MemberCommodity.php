@@ -58,7 +58,7 @@ class MemberCommodity
 	                $result_array = $this->mcio->SelectTimelimit($value['ID']);
                     //判別限時商品下架時間
                     $Nowtime = new DateTime();
-                    if($result_array[0]['Offtime'] <= $Nowtime->format('Y-m-d H:i:s')){
+                    if($result_array[0]['Offtime'] < $Nowtime->format('Y-m-d')){
                         return "限量商品已過時，請刪除限量商品";
                     }
 	            }

@@ -40,7 +40,7 @@ class limited_commodity extends Model
 
     public function scopeDuringShelves($query){
         $Nowtime = new DateTime();
-        return $query->where('offtime','>',$Nowtime->format('Y-m-d H:i:s'));
+        return $query->where('offtime','>=',$Nowtime->format('Y-m-d'));
     }
     
 
