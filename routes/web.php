@@ -10,10 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test',[
-	'as'=>"test",
-	'uses'=>'Member_commodityController@test'
-]);
+// Route::get('test',[
+// 	'as'=>"test",
+// 	'uses'=>'Member_commodityController@test'
+// ]);
 
 Route::get('/', function () {
    return View::make('Login',[
