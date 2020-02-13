@@ -1,40 +1,57 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# 藍星購物網站
++ 主要客群為高齡族群，以`清楚`、`簡單`、`易懂`為開發的主核心，並以MVC進行開發，以滿足客戶的需求變動性。
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## 前台
 
-## About Laravel
+### 商品類別
+透過該網站可以瀏覽3種不同類型的商品，分別為`團購`、`限時商品`與`一般商品`，個別擁有不一樣的產品運作模式，以下將逐一說明。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
++ 團購
+為該購物網站主要的核心購買方式，會依據購買人數的不同，產生不一樣的價格，在管理者設定的時間到期或手動進行結單時，才會知道該商品真正需要付的價格，並通知使用者進行付款，在使用者下訂單時，可以先了解目前的下單人數，以及什麼人數會有怎樣的優惠價格，並在該團購成立時，收到付款信件進行付款;價格訂定後，價格將不再變動，如果退出該團購，不會影響其他購買人的價格，成品將由廠商負責，並交由管理者決定是否將該名購買者進行黑名單處理。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
++ 限時商品
+該商品在上架時，會要求設定下架商品的時間，並於時間截止時，自動下架該商品，但是此區下架商品，並不會將資訊下架，會保留資訊給予購買者進行查詢，只有在管理者進行手動下架時，才會將該商品真正的下架
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
++ 一般商品
+該商品，於上架後，會一直處於上架狀態，可以隨時調整商品的相關內容，但不影響已售出的商品
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+### 其他功能
+網站除了上述的機制，也包含一些基本的購物網站功能`會員註冊`、`會員紅利`、`購物回饋`、`購物車`、`金流`(線上刷卡、線下ATM)、`商品模糊搜尋`等機制
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
++ 會員註冊
+    + 的部分機制說明，由於該網站為完全會員制，需要透過註冊頁面填寫資本資訊與推薦人，並經由管理者同意後，才可進行購買。
 
-## Contributing
+ + 購物車
+     + 由於`團購`為特殊的商品行為，所以我們使用商品類別處理的方式處理購物車下訂的情況，如果該購物車含有"團購"的商品，將會把該購物車拆成兩單，一單是"限時商品"與"一般商品"的訂單，另外一單是"團購商品"的訂單，"限時商品"與"一般商品"的訂單可以先進行結帳，而"團購商品"會保留至訂單內，等待該團購結束。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+## 後台(專案shopping-site-back)
+管理者介面，目標群也是高齡族群為主，所以結構設計上，也是採用少階層的方式進行開發，主要分成幾個大項目的功能類別"用戶管理"、"商品管理"、"訂單管理"、"優惠管理"、"贈送積分"、"報表"六大類別
 
-## Security Vulnerabilities
+### 用戶管理
+管理使用者，包含管理者本身，可以對使用者進行
++ 資料調整
++ 黑單
++ 允許註冊
++ 使用者查詢
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### 商品管理
++ 3種商品的上下架管理
++ 庫存管理
++ 新增修刪`商品類別`
 
-## License
+### 訂單管理
++ 訂單相關管理，可以查看個別"訂單狀態"進行操作，也可以爭對特定使用者進行查詢
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+### 優惠管理
++ 紅利比例設定
++ 購物車回扣比例
+
+### 贈送積分
++ 全體紅利贈送
++ 全會員優惠資訊寄信
+
+### 報表
++ 商品銷售報表
++ 商品月報表
++ 使用者購買報表

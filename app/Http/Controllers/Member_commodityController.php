@@ -177,7 +177,7 @@ class Member_commodityController extends Controller
                     'orderclass'=>'nogroupbuy'
                 ));
 
-            	if ($result){
+            	if ($result =='1'){
             		foreach ($json_data as $key => $value) {
             			$this->thisDelMemberCommodity($json_data[$key]->userID,'Car');
             		}
@@ -240,7 +240,7 @@ class Member_commodityController extends Controller
                 ));
                 $josn_array = null;
                 $josn_array = array();
-                if ($result){
+                if ($result=='1'){
                     $this->thisDelMemberCommodity($json_data[$key]->userID,'Groupbuy');
                     $result_message = "訂購完成";
                 }else $result_message = "訂購失敗 (".$result.")";

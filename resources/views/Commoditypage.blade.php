@@ -30,7 +30,7 @@
 			<div class="panel panel-default commoditypage_introduction_area_sytle">
 	            <div class="panel-body">
 	                <h3 class="commoditypage_introduction_title_sytle">商品簡介</h3>
-	                <p class="commoditypage_introduction_text_sytle">{{ $AllInformation['commodityIntroduction'] }}</p>
+	                <p class="commoditypage_introduction_text_sytle">{!! $AllInformation['commodityIntroduction'] !!}</p>
 	            </div>
 	            <div class="row">
 	            	@if(is_null($AllInformation['commodityPhotoB']))

@@ -42,7 +42,7 @@
                                                 'start'=>'1',
                                                 'end'=>'12',
                                                 'type'=>$All['type'][$i]['speciseID'],
-                                                'order_type'=>'AddTime',
+                                                'order_type'=>'updated_at',
                                                 'this_page'=>'1'
                                                 ]) }}" class="btn subpage_btn_type_style type_select">{{ $All['type'][$i]['speciseName'] }}</a>
                                         </div>
@@ -94,7 +94,7 @@
                                                 'start'=>1,
                                                 'end'=>12,
                                                 'type'=>$All['this_type'],
-                                                'order_type'=>'AddTime',
+                                                'order_type'=>'updated_at',
                                                 'this_page'=>1
                                                 ]) }}" data-page='{{ $pageInfo }}'>
                         	<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
@@ -106,7 +106,7 @@
                                                 'start'=>(($i-1)*12+1),
                                                 'end'=>($i*12),
                                                 'type'=>$All['this_type'],
-                                                'order_type'=>'AddTime',
+                                                'order_type'=>'updated_at',
                                                 'this_page'=>$i
                                                 ]) }}" class="page" data-page='{{ $i }}'>{{ $i }}</a></li>
                         	@endif
@@ -116,7 +116,7 @@
                                                 'start'=>(($i-1)*12+1),
                                                 'end'=>($i*12),
                                                 'type'=>$All['this_type'],
-                                                'order_type'=>'AddTime',
+                                                'order_type'=>'updated_at',
                                                 'this_page'=>$i
                                                 ]) }}" data-page='{{ $i }}'>{{ $i }}</a></li>
                         	@endif
@@ -126,7 +126,7 @@
                                                 'start'=>(($pageInfo-1)*12+1),
                                                 'end'=>($pageInfo*12),
                                                 'type'=>$All['this_type'],
-                                                'order_type'=>'AddTime',
+                                                'order_type'=>'updated_at',
                                                 'this_page'=>$pageInfo
                                                 ]) }}"  data-page='{{ $pageInfo }}'>
                         	<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
@@ -147,7 +147,7 @@
         var type = $('#Subpage_data').attr('data-type');
         var area = $('#Subpage_data').attr('data-area');
         var this_page = $('#Subpage_data').attr('data-this_page');
-        var order_type = 'AddTime';
+        var order_type = 'updated_at';
         checkPagination(this_page, last_page, area, type, order_type);
     });
 

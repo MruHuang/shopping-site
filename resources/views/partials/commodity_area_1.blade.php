@@ -15,8 +15,8 @@
                     'array_key'=>$array_key,
                     'start'=>'1',
                     'end'=>'12',
-                    'type'=>'1',
-                    'order_type'=>'AddTime',
+                    'type'=>'All',
+                    'order_type'=>'updated_at',
                     'this_page'=>'1'
                     ]) }} " class="home_more_style" style="color: red; float: right;font-size: 20px;">more..</a>
                 </div>
@@ -45,8 +45,8 @@
             'array_key'=>$array_key,
             'start'=>'1',
             'end'=>'12',
-            'type'=>'1',
-            'order_type'=>'AddTime',
+            'type'=>'All',
+            'order_type'=>'updated_at',
             'this_page'=>'1'
             ]) }} " class="home_more_style">more...</a>
     </div>
